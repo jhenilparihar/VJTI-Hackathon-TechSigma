@@ -17,7 +17,7 @@ function Navbar(props) {
 
   return (
     <div
-      className={`w-full fixed left-0 top-0 z-10 flex font-title text-white px-16 py-6 space-x-14 bg-black bg-opacity-0 transition-all duration-250 ${
+      className={`w-full fixed left-0 top-0 z-50 flex font-title text-white px-16 py-6 space-x-14 bg-black bg-opacity-0 transition-all duration-250 ${
         isScroll && "bg-opacity-80"
       }`}
     >

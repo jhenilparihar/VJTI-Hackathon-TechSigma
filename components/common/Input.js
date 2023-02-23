@@ -25,7 +25,7 @@ function Input(props) {
         {...props?.input}
         onFocus={inputFocusHandler}
         onBlur={inputBlurHandler}
-        className={props?.inputClassName || "bg-inherit border border-tertiarygrey-350 font-title focus:outline-none focus:border-tertiaryred-50 rounded-lg w-full p-3 text-sm"}
+        className={props?.inputClassName || `bg-inherit border border-tertiarygrey-350 font-title focus:outline-none focus:border-tertiaryred-50 focus:text-tertiaryred-50 rounded-lg w-full p-3 text-sm`}
       />
       {props?.extra}
     </div>

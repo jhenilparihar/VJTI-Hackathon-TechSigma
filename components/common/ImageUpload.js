@@ -1,18 +1,26 @@
 import { useState, createRef } from "react";
 import { useDropzone } from "react-dropzone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faUpload, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
+import ShakaPlayer from "shaka-player-react";
+import "shaka-player/dist/controls.css";
 
 function ImageUpload(props) {
   const [imageFile, setImageFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(props?.image);
+  const [isPreviewImageHovered, setIsPreviewImageHovered] = useState(false);
 
   const { getRootProps, getInputProps, open } = useDropzone({
     onDropAccepted: (acceptedFiles) => {
       imageUploadHandler(acceptedFiles);
     },
-    accept: props?.acceptExtension,
+    accept: {
+      "image/*": [".jpeg", ".png"],
+      "video/*": [".mp4"],
+      "audio/*": [".mp4"],
+    },
+    maxFiles: 1,
   });
 
   const imageUploadHandler = (acceptedFiles) => {
@@ -46,11 +54,13 @@ function ImageUpload(props) {
   }, [imageFile, props?.image]);
 
   return (
-    <div className={`flex-grow flex flex-col space-y-5 ${props?.className}`}>
+    <div
+      className={`flex-grow flex flex-col space-y-5 text-tertiaryred-50 ${props?.className}`}
+    >
       {!previewImage && (
         <div
           {...getRootProps()}
-          className="h-full flex flex-col justify-center items-center space-y-6 cursor-pointer border-2 border-black border-dashed text-base"
+          className="h-full flex flex-col justify-center items-center space-y-6 cursor-pointer border-2 border-tertiaryred-50 border-dashed text-base"
         >
           <input {...getInputProps()} />
           <FontAwesomeIcon icon={faUpload} />
@@ -58,46 +68,42 @@ function ImageUpload(props) {
         </div>
       )}
       {previewImage && (
-        <img
-          src={previewImage}
-          className={`${props?.imageDimensions}`}
-        />
-      )}
-      <div className="flex items-center space-x-3">
-        <button
-          type="button"
-          disabled={!previewImage}
-          onClick={openUploadDialogHandler}
-          className={`px-4 py-2 rounded-md text-white ${
-            previewImage ? "bg-indigo-700" : "bg-slate-500"
-          }`}
+        <div
+          className={`${props?.imageDimensions} relative`}
+          onMouseOver={() => {
+            setIsPreviewImageHovered(true);
+          }}
+          onMouseOut={() => {
+            setIsPreviewImageHovered(false);
+          }}
         >
-          Upload Another
-        </button>
-        {props?.enableReset && (
-          <button
-            type="button"
-            disabled={previewImage === props?.image}
-            onClick={resetImageHandler}
-            className={`px-4 py-2 rounded-md text-white ${
-              previewImage !== props?.image ? "bg-red-600" : "bg-slate-500"
-            }`}
-          >
-            Reset
-          </button>
-        )}
-        {props?.enableDelete && (
-          <button
-            type="button"
-            onClick={deleteImageHandler}
-            className={`px-4 py-2 rounded-md text-white ${
-              previewImage ? "bg-red-600" : "bg-slate-500"
-            }`}
-          >
-            Delete
-          </button>
-        )}
-      </div>
+          {isPreviewImageHovered && (
+            <div className="flex items-center space-x-5 justify-center text-base font-display h-full w-full absolute z-10 bg-tertiarygrey-400 bg-opacity-80 transition-all duration-500">
+              <button
+                type="button"
+                onClick={openUploadDialogHandler}
+                className={`px-4 py-3 rounded-full border-2 text-white hover:text-tertiaryred-50 hover:border-tertiaryred-50 transition-all duration-500`}
+              >
+                <FontAwesomeIcon icon={faUpload} />
+              </button>
+              {props?.enableReset && (
+                <button
+                  type="button"
+                  disabled={previewImage === props?.image}
+                  onClick={resetImageHandler}
+                  className={`px-4 py-3 rounded-full border-2 text-white hover:text-tertiaryred-50 hover:border-tertiaryred-50 transition-all duration-500`}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              )}
+            </div>
+          )}
+          <img
+            src={previewImage}
+            className="h-full w-full object-contain object-center"
+          />
+        </div>
+      )}
     </div>
   );
 }
