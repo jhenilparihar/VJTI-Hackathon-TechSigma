@@ -1,8 +1,9 @@
 import Input from "../common/Input";
 import useInput from "@/hooks/use-input";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import "react-quill/dist/quill.snow.css";
 import ImageUpload from "../common/ImageUpload";
+import BlockChainContext from "@/store/blockchain-context";
 
 const toolbarContainer = [
   ["bold", "italic", "underline"], // toggled buttons
@@ -16,6 +17,8 @@ const ReactQuill =
 
 function CreateNFT(props) {
   const [imageInput, setImageInput] = useState("");
+
+  const blockChainCtx  = useContext(BlockChainContext);
 
   const nameInput = useInput("", (name) => {
     return name?.length > 0;

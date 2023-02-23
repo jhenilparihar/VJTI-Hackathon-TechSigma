@@ -3,8 +3,8 @@ import { useDropzone } from "react-dropzone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
-import ShakaPlayer from "shaka-player-react";
-import "shaka-player/dist/controls.css";
+// import ShakaPlayer from "shaka-player-react";
+// import "shaka-player/dist/controls.css";
 
 function ImageUpload(props) {
   const [imageFile, setImageFile] = useState(null);
