@@ -13,13 +13,19 @@
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@next/font": "13.1.6",
+    "@openzeppelin/contracts": "^3.4.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-register": "^6.26.0",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
-    "react-quill": "^2.0.0"
+    "react-quill": "^2.0.0",
+    "truffle": "5.0.5",
+    "truffle-flattener": "^1.5.0",
+    "web3": "^1.8.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
