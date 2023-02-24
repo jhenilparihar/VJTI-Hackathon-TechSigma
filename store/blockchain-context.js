@@ -129,11 +129,9 @@ export const BlockChainContextProvider = (props) => {
           const address = await NFTContract.methods
             .allAddress(profile_counter)
             .call();
-          const profile = await NFTContract.methods
-            .allProfiles(address)
-            .call();
+          const profile = await NFTContract.methods.allProfiles(address).call();
 
-          setAllUserProfile({...allUserProfile,address:profile})
+          setAllUserProfile({ ...allUserProfile, address: profile });
         }
         totalTokensMinted = parseInt(totalTokensMinted);
         setTotalMinted(totalTokensMinted);
@@ -192,7 +190,7 @@ export const BlockChainContextProvider = (props) => {
         .addUserProfile(
           "https://ipfs.infura.io/ipfs/QmeAcsFZfRd719RHMivPUitJpXzH54k8d3CXpmvmLZnF7A",
           "https://bafybeih5pgcobf6hpgf2pexmkhfsk55zr4dywrazgybk7u2fp6w4webkxu.ipfs.infura-ipfs.io/",
-          "Unnamed",
+          "@newUser",
           "No description",
           accountAddress,
           "abc@gmail.com",
@@ -208,9 +206,9 @@ export const BlockChainContextProvider = (props) => {
 
     console.log(accountAddress);
   };
-  useEffect(()=>{
-   console.log(allUserProfile,'all')
-  },[allUserProfile])
+  useEffect(() => {
+    console.log(allUserProfile, "all");
+  }, [allUserProfile]);
 
   const setMetaData = async () => {
     if (NFTs.length !== 0) {
@@ -422,8 +420,6 @@ export const BlockChainContextProvider = (props) => {
     await loadBlockchainData();
   };
   useEffect(() => {
-    
-
     getData();
   }, []);
 
@@ -437,14 +433,13 @@ export const BlockChainContextProvider = (props) => {
   const setProfile = async () => {
     console.log(NFTContract, accountAddress);
     if (accountAddress && NFTContract) {
-       {
+      {
         console.log("gasdgjak");
         await uploadProfile();
       }
     }
   };
   useEffect(() => {
-   
     setProfile();
   }, [NFTContract]);
 
