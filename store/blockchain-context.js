@@ -2,6 +2,8 @@ import React, { useEffect, useContext, useState } from "react";
 import Web3 from "web3";
 import Marketplace from "../abis/Marketplace.json";
 import axios from "axios";
+import { create } from "ipfs-http-client";
+import { Buffer } from "buffer";
 
 const blockChainObj = {
   accountAddress: "",
@@ -43,7 +45,7 @@ export const BlockChainContextProvider = (props) => {
   const [lastMintTime, setLastMintTime] = useState(null);
   const [currentProfile, setCurrentProfile] = useState("");
   const [allUserProfile, setAllUserProfile] = useState({});
-
+  console.log(NFTs);
   // console.log("dsd", NFTContract)
   const loadWeb3 = async () => {
     if (window.ethereum) {
@@ -59,7 +61,7 @@ export const BlockChainContextProvider = (props) => {
 
   const loadBlockchainData = async () => {
     // if(!metamaskConnected) {
-      await connectToMetamask();
+    await connectToMetamask();
     // }
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
@@ -188,8 +190,8 @@ export const BlockChainContextProvider = (props) => {
       const overAllDate = month + " " + day + " " + year;
       NFTContract.methods
         .addUserProfile(
-          "https://ipfs.infura.io/ipfs/QmeAcsFZfRd719RHMivPUitJpXzH54k8d3CXpmvmLZnF7A",
-          "https://bafybeih5pgcobf6hpgf2pexmkhfsk55zr4dywrazgybk7u2fp6w4webkxu.ipfs.infura-ipfs.io/",
+          "https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+          "https://blogs.airdropalert.com/wp-content/uploads/2021/12/Lazy-Lion-NFT-1005x1024.png",
           "@newUser",
           "No description",
           accountAddress,
@@ -198,8 +200,8 @@ export const BlockChainContextProvider = (props) => {
         )
         .send({ from: accountAddress })
         .on("confirmation", () => {
-          localStorage.setItem(this.state.accountAddress, new Date().getTime());
-          this.setState({ loading: false });
+          localStorage.setItem(accountAddress, new Date().getTime());
+          setLoading(false);
           // window.location.reload();
         });
     }
@@ -211,9 +213,11 @@ export const BlockChainContextProvider = (props) => {
   }, [allUserProfile]);
 
   const setMetaData = async () => {
+    console.log(NFTs)
     if (NFTs.length !== 0) {
       NFTs.map(async (nft) => {
-        const result = await fetch(nft.tokenURI);
+        console.log(nft.tokenURI);
+        const result = await fetch(nft?.tokenURI);
         const metaData = await result.json();
         setNFTs((prevState) => {
           return prevState.map((nft) => {
@@ -232,30 +236,32 @@ export const BlockChainContextProvider = (props) => {
   // new ipfs//
 
   const uploadFileToIPFS = async (fileBlob) => {
-    const apiKey =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDE5NzkzNUM4NUQxODZmNEJCN2NlN2U1RjhGYjY4NWQ4NUJlY0ZkREEiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY3NjE5OTY3NzU0MywibmFtZSI6ImhhcnNoQDIzMDQifQ.gEWeVVohValCGdXRyGorzcYkc0umfpjcJOsPJxDMkQU";
+    const projectId = "2LEiWo06lqrPLBn4x5fxBHwMDgg";
+    const projectSecret = "c567bca7714ae367126c8b266fe86cab";
+    const auth =
+      "Basic " +
+      Buffer.from(projectId + ":" + projectSecret).toString("base64");
 
-    var config = {
-      method: "post",
-      url: "https://api.nft.storage/upload",
+    const client = create({
+      host: "ipfs.infura.io",
+      port: 5001,
+      protocol: "https",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "image/jpeg",
+        authorization: auth,
       },
-      data: fileBlob,
-    };
+    });
 
-    const fileUploadResponse = await axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        return response.data;
-      })
-      .catch(function (error) {
-        console.log(error);
-        return error;
-      });
+    const file = fileBlob;
+    try {
+      const added = await client.add(file);
+      const url = `https://infura-ipfs.io/ipfs/${added.path}`;
+      //   updateFileUrl(url)
 
-    return fileUploadResponse;
+      console.log("IPFS URI of trailer: ", url);
+      return url;
+    } catch (error) {
+      console.log("Error uploading file: ", error);
+    }
   };
 
   //end//
@@ -317,11 +323,7 @@ export const BlockChainContextProvider = (props) => {
         imageUrl: fileUrl,
         description: description,
       };
-      const metadataUploadResponse = await uploadFileToIPFS(
-        JSON.stringify(tokenObject)
-      );
-      // const cid = await ipfs.add(JSON.stringify(tokenObject));
-      let tokenURI = `https://alchemy.mypinata.cloud/ipfs/${metadataUploadResponse.value.cid}`;
+      const tokenURI = await uploadFileToIPFS(JSON.stringify(tokenObject));
       const price = window.web3.utils.toWei(tokenPrice.toString(), "ether");
 
       NFTContract?.methods

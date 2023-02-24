@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/runtime-corejs2": "^7.21.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-    "@babel/runtime-corejs2": "^7.21.0",
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
@@ -26,17 +26,18 @@
     "buffer-to-arraybuffer": "^0.0.6",
     "bufferutil": "^4.0.7",
     "cacheable-request": "^10.2.7",
+    "chart.js": "^4.2.1",
     "content-hash": "^2.5.2",
     "convert-source-map": "^2.0.0",
     "crc-32": "^1.2.2",
     "cross-fetch": "^3.1.5",
     "defer-to-connect": "^2.0.1",
     "deps": "^1.0.0",
-    "chart.js": "^4.2.1",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
     "fs-minipass": "^3.0.1",
     "idna-uts46-hx": "^4.1.2",
+    "ipfs-http-client": "^60.0.0",
     "jsesc": "^3.0.2",
     "next": "13.1.6",
     "number-to-bn": "^1.7.0",
@@ -53,8 +54,8 @@
     "to-fast-properties": "^4.0.0",
     "truffle": "^5.4.29",
     "truffle-flattener": "^1.5.0",
-    "web3": "^1.8.2",
-    "utils": "^0.3.1"
+    "utils": "^0.3.1",
+    "web3": "^1.8.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",

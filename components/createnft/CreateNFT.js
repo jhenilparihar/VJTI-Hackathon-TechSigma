@@ -66,11 +66,7 @@ function CreateNFT(props) {
   };
 
   const uploadToIPFSHandler = async () => {
-    const fileUploadResponse = await blockChainCtx?.uploadFileToIPFS(
-      imageInput
-    );
-    const IPFS = fileUploadResponse?.value?.cid;
-    const fileLink = `https://alchemy.mypinata.cloud/ipfs/${IPFS}/`;
+    const fileLink = await blockChainCtx?.uploadFileToIPFS(imageInput);
     setFileURL(fileLink);
     console.log("hey", fileLink);
   };
