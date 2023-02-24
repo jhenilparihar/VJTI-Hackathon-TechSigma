@@ -28,13 +28,8 @@ const Nftdet = (props) => {
   };
 
   return (
-<<<<<<< HEAD
     <div className="flex px-4 py-2">
       <img src={props?.tokenImage} className="w-[38%] h-[40%]"></img>
-=======
-    <div className="flex px-4 py-2 items-center">
-      <img src={props.img} className="w-[38%] h-[40%]"></img>
->>>>>>> 4f5631d436df88757a23b63d7da899632aeb2d97
       <div className="w-[62%] flex flex-col px-5 py-2 ">
         <h1 className="  text-2xl font-medium font-Heading w-full">
           {props?.tokenName}
@@ -42,68 +37,13 @@ const Nftdet = (props) => {
         <p className=" text-sm  text-tertiarygrey-450 py-2 border-b-2 border-tertiarygrey-150">
           {props?.metaData?.description}
         </p>
-<<<<<<< HEAD
-        <div>
-          <div className="flex space-x-4 my-5">
-            <Owner
-              img={""}
-              deg="Owner"
-              name={""}
-            ></Owner>
-            <Owner
-              img={"https://niftykit.com/wp-content/uploads/2021/08/bayc.jpg"}
-              deg="Creator"
-              name="@par222"
-            ></Owner>
-          </div>
-          <div>
-            <p className="text-tertiarygrey-50 text-sm font-medium">Price</p>
-            <p className="font-medium text-lg my-2">
-              {props?.price}{" "}
-              <span className="text-tertiarygrey-50 font-display text-xs mx-1">
-                (7.05 USD)
-              </span>
-            </p>
-          </div>
-          <div>
-            <nav className="text-sm flex space-x-10 w-[100%] py-0  my-2 border-b-[2px] border-tertiarygrey-150 cursor-pointer">
-              <span
-                className={
-                  currentTab.owner
-                    ? "border-b-4 py-2 border-tertiaryred-50"
-                    : "py-2"
-                }
-                onClick={() => {
-                  setTab({ price: false, bid: false, owner: true });
-                }}
-              >
-                Owners
-              </span>
-              <span
-                className={
-                  currentTab.price
-                    ? "border-b-4 py-2 border-tertiaryred-50"
-                    : "py-2"
-                }
-                onClick={() => {
-                  setTab({ bid: false, owner: false, price: true });
-                }}
-              >
-                Price History
-              </span>
-              {props?.currentOwner === props?.currentAccount}
-            </nav>
-            {/* {currentTab.owner && <OwnerList owners={props.owner}></OwnerList>} */}
-            {currentTab.price && <PriceChart data={data}></PriceChart>}
-            {currentTab.bid && (
-=======
         {!bid && (
           <div>
             <div className="flex space-x-4 my-5">
               <Owner
-                img={props.owner[0].img}
+                img=""
                 deg="Owner"
-                name={props.owner[0].name}
+                name={""}
               ></Owner>
               <Owner
                 img={"https://niftykit.com/wp-content/uploads/2021/08/bayc.jpg"}
@@ -203,7 +143,6 @@ const Nftdet = (props) => {
               {currentTab.owner && <OwnerList owners={props.owner}></OwnerList>}
               {currentTab.price && <PriceChart data={data}></PriceChart>}
               {currentTab.bid && (
->>>>>>> 4f5631d436df88757a23b63d7da899632aeb2d97
                 <>
                   <div className="flex space-x-2 items-center justify-center pt-6">
                     <svg

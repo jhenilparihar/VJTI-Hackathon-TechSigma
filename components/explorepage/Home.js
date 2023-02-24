@@ -20,9 +20,8 @@ function Home(props) {
   const blockChainCtx = useContext(BlockChainContext);
   const [currentTokenId, setCurrentTokenId] = useState("");
 
-  console.log(blockChainCtx)
   const NFT = blockChainCtx?.NFTs?.filter((nft) => {
-    return NFT?.tokenId === currentTokenId;
+    return nft?.tokenId === currentTokenId;
   })[0]
 
   const NFTClickHandler = (tokenId) => {

@@ -34,7 +34,6 @@ function Carousel(props) {
     let userImage = "";
     if (item?.tokenId) {
       userImage = blockChainCtx?.allUserProfile[item?.currentOwner]?.imageHash;
-      console.log("dhjd", blockChainCtx?.allUserProfile)
     }
 
     return (

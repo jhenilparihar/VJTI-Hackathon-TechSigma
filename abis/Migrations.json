@@ -70,7 +70,7 @@
   "sourceMap": "69:493:2:-:0;;;162:45;;;;;;;;;;191:10;183:5;;:18;;;;;;;;;;;;;;;;;;69:493;;;;;;",
   "deployedSourceMap": "69:493:2:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;391:168;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;119:36;;;:::i;:::-;;;;;;;;;;;;;;;;;;;94:20;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;280:105;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;391:168;260:5;;;;;;;;;;246:19;;:10;:19;;;242:26;;;454:19:::1;487:11;454:45;;506:8;:21;;;528:24;;506:47;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;;;;;267:1;242:26:::0;391:168;:::o;119:36::-;;;;:::o;94:20::-;;;;;;;;;;;;:::o;280:105::-;260:5;;;;;;;;;;246:19;;:10;:19;;;242:26;;;370:9:::1;343:24;:36;;;;242:26:::0;280:105;:::o",
   "source": "// SPDX-License-Identifier: MIT\r\npragma solidity >=0.4.21 <0.8.0;\r\n\r\ncontract Migrations {\r\n  address public owner;\r\n  uint public last_completed_migration;\r\n\r\n  constructor() {\r\n    owner = msg.sender;\r\n  }\r\n\r\n  modifier restricted() {\r\n    if (msg.sender == owner) _;\r\n  }\r\n\r\n  function setCompleted(uint completed) public restricted {\r\n    last_completed_migration = completed;\r\n  }\r\n\r\n  function upgrade(address new_address) public restricted {\r\n    Migrations upgraded = Migrations(new_address);\r\n    upgraded.setCompleted(last_completed_migration);\r\n  }\r\n}\r\n",
-  "sourcePath": "C:\\Users\\paras mehta\\vjti-hackathon-frontend\\contracts\\Migrations.sol",
+  "sourcePath": "C:\\Users\\asus\\Desktop\\Hackathons\\VJTI HACKATHON\\hackathon-frontend\\contracts\\Migrations.sol",
   "ast": {
     "absolutePath": "project:/contracts/Migrations.sol",
     "exportedSymbols": {
@@ -1428,21 +1428,12 @@
     "5777": {
       "events": {},
       "links": {},
-<<<<<<< HEAD
-      "address": "0x227b9839e6FD85cAc795D1194DcAb6129CD4acAA",
-      "transactionHash": "0x95d70178b0817899df58d287f123c8d78ee66ec6778eed213815598394ceb15a"
+      "address": "0xCa7A492fB9941cCf7164Be8916889c1A78411E5D",
+      "transactionHash": "0x3aa96f7c649981a57b527c60368185aadc79d17d7552599e40544f33e217be6f"
     }
   },
   "schemaVersion": "3.4.4",
-  "updatedAt": "2023-02-24T13:45:16.869Z",
-=======
-      "address": "0x2da2e48B4A2f6eAe7549c5E0D8fcf7fBF83475a5",
-      "transactionHash": "0x026d381da1eac0ff962fd69206f359e36856539ab89532ac3b580eb135581b40"
-    }
-  },
-  "schemaVersion": "3.4.4",
-  "updatedAt": "2023-02-24T13:14:55.809Z",
->>>>>>> 4f5631d436df88757a23b63d7da899632aeb2d97
+  "updatedAt": "2023-02-24T14:18:52.391Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
