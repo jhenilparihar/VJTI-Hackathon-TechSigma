@@ -27,7 +27,6 @@ const BlockChainContext = React.createContext(blockChainObj);
 export default BlockChainContext;
 
 export const BlockChainContextProvider = (props) => {
-
   const [accountAddress, setAccountAddress] = useState("");
   const [accountBalance, setAccountBalance] = useState(0);
   const [NFTContract, setNFTContract] = useState("");
@@ -45,10 +44,10 @@ export const BlockChainContextProvider = (props) => {
   const [currentProfile, setCurrentProfile] = useState("");
   const [allUserProfile, setAllUserProfile] = useState({});
 
-  console.log("NFT", NFTContract)
-
+  console.log(NFTs);
 
   const loadWeb3 = async () => {
+    
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
     } else if (window.web3) {
@@ -61,19 +60,25 @@ export const BlockChainContextProvider = (props) => {
   };
 
   const loadBlockchainData = async () => {
+    // if(!metamaskConnected) {
+    //   await connectToMetamask();
+    // }
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
     if (accounts.length === 0) {
       setMetaMaskConnected(false);
     } else {
+      localStorage.setItem("metaMaskConnected", true);
+      localStorage.setItem("accountAddress", accounts[0]);
       setMetaMaskConnected(true);
       setLoading(true);
       setAccountAddress(accounts[0]);
-      console.log(accounts[0]);
       let accountBalance = await web3.eth.getBalance(accounts[0]);
       accountBalance = web3.utils.fromWei(accountBalance, "Ether");
       setAccountBalance(accountBalance);
       setLoading(false);
+      localStorage.setItem("accountBalance", accountBalance);
+      localStorage.setItem("loading", false);
       const networkId = await web3.eth.net.getId();
       const networkData = Marketplace.networks[networkId];
       if (networkData) {
@@ -84,6 +89,8 @@ export const BlockChainContextProvider = (props) => {
         );
         setNFTContract(NFTContract);
         setContractDetected(true);
+        localStorage.setItem("NFTContract", NFTContract);
+        localStorage.setItem("contractDetected", contractDetected);
 
         const isProfileSet = await NFTContract?.methods
           ?.isProfileSet(accounts[0])
@@ -126,11 +133,22 @@ export const BlockChainContextProvider = (props) => {
 
         const NFTCount = await NFTContract?.methods?.NFTCounter().call();
         setNFTCount(NFTCount);
+        localStorage.setItem("NFTCount", NFTCount);
         for (var i = 1; i <= NFTCount; i++) {
           const nft = await NFTContract?.methods?.allNFTs(i).call();
           setNFTs((prevState) => {
-            const newState = [...prevState, nft];
-            return newState;
+            let flag = false;
+            for (let i of prevState) {
+              if (i?.tokenId === nft?.tokenId) {
+                flag = true;
+                break;
+              }
+            }
+            if (!flag) {
+              const newState = [...prevState, nft];
+              return newState;
+            }
+            return prevState;
           });
         }
         let totalTokensMinted = await NFTContract?.methods
@@ -140,6 +158,7 @@ export const BlockChainContextProvider = (props) => {
         const cp = await NFTContract?.methods?.allProfiles(accounts[0]).call();
 
         setCurrentProfile(cp);
+        localStorage.setItem("currentProfile", cp);
 
         const ProfileCounter = await NFTContract?.methods?.UserCounter().call();
 
@@ -151,16 +170,19 @@ export const BlockChainContextProvider = (props) => {
           const address = await NFTContract?.methods
             ?.allAddress(profile_counter)
             .call();
-          const profile = await NFTContract?.methods?.allProfiles(address).call();
+          const profile = await NFTContract?.methods
+            ?.allProfiles(address)
+            .call();
 
           allUserProfile[address] = profile;
         }
-        console.log(totalTokensMinted);
         totalTokensMinted = parseInt(totalTokensMinted);
         setTotalMinted(totalTokensMinted);
+        localStorage.setItem("totalTokensMinted", totalTokensMinted);
         setLoading(false);
       } else {
         setContractDetected(contractDetected);
+        localStorage.setItem("contractDetected", contractDetected);
       }
     }
   };
@@ -174,7 +196,7 @@ export const BlockChainContextProvider = (props) => {
   const connectToMetamask = async () => {
     await window.ethereum.enable();
     setMetaMaskConnected(true);
-    window.location.reload();
+    // window.location.reload();
   };
 
   const uploadProfile = async (
@@ -208,16 +230,15 @@ export const BlockChainContextProvider = (props) => {
       NFTs.map(async (nft) => {
         const result = await fetch(nft.tokenURI);
         const metaData = await result.json();
-
         setNFTs((prevState) => {
-          return prevState.map((nft) =>
-            nft.tokenId.toNumber() === Number(metaData.tokenId)
+          return prevState.map((nft) => {
+            return parseInt(nft.tokenId) === Number(metaData.tokenId)
               ? {
                   ...nft,
                   metaData,
                 }
-              : nft
-          );
+              : nft;
+          });
         });
       });
     }
@@ -255,7 +276,7 @@ export const BlockChainContextProvider = (props) => {
   //end//
 
   const mintMyNFT = async (fileUrl, name, tokenPrice, description) => {
-    console.log("mint", fileUrl, name, tokenPrice, description)
+    console.log("mint", fileUrl, name, tokenPrice, description);
     var months = [
       "January",
       "February",
@@ -295,8 +316,8 @@ export const BlockChainContextProvider = (props) => {
       ?.tokenImageExists(fileUrl)
       .call();
 
-    console.log("image", imageIsUsed)
-    console.log("name", nameIsUsed)
+    console.log("image", imageIsUsed);
+    console.log("name", nameIsUsed);
 
     if (!nameIsUsed && !imageIsUsed) {
       let previousTokenId;
@@ -371,6 +392,13 @@ export const BlockChainContextProvider = (props) => {
       });
   };
 
+  // const connectToMetamaskHandler = async () => {
+  //   await connectToMetamask();
+  //   await loadWeb3();
+  //   await loadBlockchainData();
+  //   await setMetaData();
+  // };
+
   const blockChainCtx = {
     accountAddress: accountAddress,
     accountBalance: accountBalance,
@@ -390,14 +418,35 @@ export const BlockChainContextProvider = (props) => {
     allUserProfile: allUserProfile,
     mintMyNFT: mintMyNFT,
     uploadFileToIPFS: uploadFileToIPFS,
-    
   };
 
+  // useEffect(() => {
+  //   // const isReload = localStorage?.getItem("isReload");
+  //   // if(isReload == undefined) {
+  //     // localStorage?.setItem("isReload", true);
+
+  //   // else if(isReload) {
+  //   //   localStorage?.setItem("isReload", false);
+  //   //   return;
+  //   // }
+  // }, []);
+
   useEffect(() => {
-    loadWeb3();
-    loadBlockchainData();
-    setMetaData();
+    const getData = async () => {
+      await loadWeb3();
+      await loadBlockchainData();
+    };
+
+    getData();
   }, []);
+
+  useEffect(() => {
+    const getData = async () => {
+      await setMetaData();
+    };
+
+    getData();
+  }, [NFTs?.length]);
 
   return (
     <BlockChainContext.Provider value={blockChainCtx}>

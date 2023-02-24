@@ -14,7 +14,7 @@ function Carousel(props) {
       if (prevState > 0) {
         return prevState - 1;
       }
-      return 1;
+      return 0;
     });
   };
 
@@ -28,12 +28,13 @@ function Carousel(props) {
   };
 
   const recs = props?.items?.map((item, index) => {
+    console.log(item)
     return (
       <div
         key={index}
         className="rounded-lg h-[325px] w-[225px] flex-shrink-0 transform transition duration-500 hover:scale-125"
       >
-        <img src={item} className="h-full w-full object-cover rounded-lg" />
+        <img src={item?.tokenImage} className="h-full w-full object-cover rounded-lg" />
       </div>
     );
   });

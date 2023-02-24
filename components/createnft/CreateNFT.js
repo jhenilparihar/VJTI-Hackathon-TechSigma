@@ -12,8 +12,7 @@ const toolbarContainer = [
   [{ list: "ordered" }, { list: "bullet" }],
 ];
 
-const ReactQuill =
-  typeof window === "object" ? require("react-quill") : () => false;
+const ReactQuill = dynamic(import("react-quill"), { ssr: false });
 
 function CreateNFT(props) {
   const [imageInput, setImageInput] = useState("");

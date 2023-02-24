@@ -1,7 +1,8 @@
 import CurrentBanner from "./CurrentBanner";
-import { useState } from "react";
+import { useContext } from "react";
 import Carousel from "../common/Carousel";
 import TrendingNow from "./TrendingNow";
+import BlockChainContext from "@/store/blockchain-context";
 
 const recommendations = [
   "https://www.indiewire.com/wp-content/uploads/2017/09/imperial-dreams-2014.jpg?w=426",
@@ -14,11 +15,13 @@ const recommendations = [
 ];
 
 function Home(props) {
+  const blockChainCtx = useContext(BlockChainContext);
+
   return (
     <div className="pb-10">
       <CurrentBanner />
       <div className="px-16">
-        <Carousel items={recommendations} className="" />
+        <Carousel items={blockChainCtx?.NFTs} className="" />
       </div>
       <TrendingNow items={recommendations} />
     </div>
