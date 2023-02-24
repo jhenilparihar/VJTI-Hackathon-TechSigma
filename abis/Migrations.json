@@ -70,7 +70,7 @@
   "sourceMap": "69:493:2:-:0;;;162:45;;;;;;;;;;191:10;183:5;;:18;;;;;;;;;;;;;;;;;;69:493;;;;;;",
   "deployedSourceMap": "69:493:2:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;391:168;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;119:36;;;:::i;:::-;;;;;;;;;;;;;;;;;;;94:20;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;280:105;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;391:168;260:5;;;;;;;;;;246:19;;:10;:19;;;242:26;;;454:19:::1;487:11;454:45;;506:8;:21;;;528:24;;506:47;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;::::0;::::1;;;;;;;;;;;;::::0;::::1;;;;;;;;;267:1;242:26:::0;391:168;:::o;119:36::-;;;;:::o;94:20::-;;;;;;;;;;;;:::o;280:105::-;260:5;;;;;;;;;;246:19;;:10;:19;;;242:26;;;370:9:::1;343:24;:36;;;;242:26:::0;280:105;:::o",
   "source": "// SPDX-License-Identifier: MIT\r\npragma solidity >=0.4.21 <0.8.0;\r\n\r\ncontract Migrations {\r\n  address public owner;\r\n  uint public last_completed_migration;\r\n\r\n  constructor() {\r\n    owner = msg.sender;\r\n  }\r\n\r\n  modifier restricted() {\r\n    if (msg.sender == owner) _;\r\n  }\r\n\r\n  function setCompleted(uint completed) public restricted {\r\n    last_completed_migration = completed;\r\n  }\r\n\r\n  function upgrade(address new_address) public restricted {\r\n    Migrations upgraded = Migrations(new_address);\r\n    upgraded.setCompleted(last_completed_migration);\r\n  }\r\n}\r\n",
-  "sourcePath": "C:\\Users\\paras mehta\\vjti-hackathon-frontend\\contracts\\Migrations.sol",
+  "sourcePath": "C:\\Users\\asus\\Desktop\\Hackathons\\VJTI HACKATHON\\hackathon-frontend\\contracts\\Migrations.sol",
   "ast": {
     "absolutePath": "project:/contracts/Migrations.sol",
     "exportedSymbols": {
@@ -1428,12 +1428,21 @@
     "5777": {
       "events": {},
       "links": {},
+<<<<<<< HEAD
       "address": "0xA0714A4c90DDB5e65375aBe6073d3317155D80A6",
       "transactionHash": "0x8be1b211154f66d41dba1917662f1e38e5e798d99df3ecd7501335da87cf8c6f"
     }
   },
   "schemaVersion": "3.4.4",
   "updatedAt": "2023-02-24T13:51:42.873Z",
+=======
+      "address": "0xCa7A492fB9941cCf7164Be8916889c1A78411E5D",
+      "transactionHash": "0x3aa96f7c649981a57b527c60368185aadc79d17d7552599e40544f33e217be6f"
+    }
+  },
+  "schemaVersion": "3.4.4",
+  "updatedAt": "2023-02-24T14:18:52.391Z",
+>>>>>>> c30a00a40b7c50a613daa704b9bd9cc2c6cda40a
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

@@ -59,17 +59,17 @@ function Navbar(props) {
           Create
         </div>
         <div
-          // onClick={() => {
-          //   tabClickHandler("create");
-          // }}
+          onClick={() => {
+            tabClickHandler("feed");
+          }}
           className={`cursor-pointer py-6 px-2 ${
-            currentTab === "new" &&
+            currentTab === "feed" &&
             " text-tertiaryred-50"
           }`}
         >
-          Recently Added
-        </div>
-        <div
+          Feed
+          </div>
+          <div
            onClick={() => {
             tabClickHandler("profile");
           }}
