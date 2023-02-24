@@ -380,6 +380,7 @@ export const BlockChainContextProvider = (props) => {
     currentProfile: currentProfile,
     allUserProfile: allUserProfile,
     mintMyNFT: mintMyNFT,
+    uploadFileToIPFS: uploadFileToIPFS,
   };
 
   useEffect(() => {
