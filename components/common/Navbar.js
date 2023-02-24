@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
-
+import BlockChainContext from "@/store/blockchain-context";
 function Navbar(props) {
+   const ctx=useContext(BlockChainContext)
+
   const [isScroll, setIsScroll] = useState(false);
   const [currentTab, setCurrentTab] = useState("explore");
 
@@ -71,7 +73,7 @@ function Navbar(props) {
           </div>
           <div
            onClick={() => {
-            tabClickHandler("profile");
+            tabClickHandler(`profile/${ctx.accountAddress}}`);
           }}
           className={`cursor-pointer py-6 px-2 ${
             currentTab === "new" &&

@@ -213,7 +213,7 @@ export const BlockChainContextProvider = (props) => {
           localStorage.setItem(this.state.accountAddress, new Date().getTime());
           this.setState({ loading: false });
           // window.location.reload();
-          router.reload();
+          //router.reload();
         });
     }
   };
@@ -335,7 +335,7 @@ export const BlockChainContextProvider = (props) => {
         .on("confirmation", () => {
           localStorage.setItem(accountAddress, new Date().getTime());
           setLoading(false);
-          window.location.reload();
+         // window.location.reload();
         });
     } else {
       if (nameIsUsed) {
@@ -355,7 +355,7 @@ export const BlockChainContextProvider = (props) => {
       .send({ from: accountAddress })
       .on("confirmation", () => {
         setLoading(false);
-        window.location.reload();
+        //window.location.reload();
       });
   };
 
@@ -367,18 +367,19 @@ export const BlockChainContextProvider = (props) => {
       .send({ from: accountAddress })
       .on("confirmation", () => {
         setLoading(false);
-        window.location.reload();
+        //window.location.reload();
       });
   };
 
   const buyNFT = (tokenId, price) => {
+    console.log(tokenId,typeof(tokenId),price,typeof(price),'tt')
     setLoading(true);
     NFTContract?.methods
       ?.buyToken(tokenId)
       .send({ from: accountAddress, value: price })
       .on("confirmation", () => {
         setLoading(false);
-        window.location.reload();
+        //window.location.reload();
       });
   };
 
