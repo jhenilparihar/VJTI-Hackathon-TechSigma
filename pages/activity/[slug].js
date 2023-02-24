@@ -32,7 +32,7 @@ const Index = () => {
           negText="Cancel"
           negHandler={() => setModal(false)}
           posHandler={() => setModal(false)}
-          className="h-[50%] w-[50%]"
+          className="h-[50%] w-[50%] top-[25%] left-[25%]"
         >
           <ActivityList></ActivityList>
         </GenericModal>
