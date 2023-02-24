@@ -31,7 +31,8 @@ function Home(props) {
   }
 
   const buyNFTHandler = () => {
-    blockChainCtx.buyNFT(NFT.tokenId,NFT.price)
+    console.log(typeof(NFT.tokenId),NFT.tokenId,typeof(NFT.price),NFT.price)
+    blockChainCtx.buyNFT(parseInt(NFT.tokenId),NFT.price)
 
   }
   useEffect(()=>{
