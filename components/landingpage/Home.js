@@ -1,5 +1,10 @@
 import MainScreen from "./MainScreen";
 import Section from "./Section";
+import ai from "../../public/animations/ai";
+import audit from "../../public/animations/audit";
+import transperant2 from "../../public/animations/transperant2";
+import Section2 from "./Section2";
+import Section3 from "./Section3";
 
 function Home(props) {
   return (
@@ -7,25 +12,29 @@ function Home(props) {
       <MainScreen />
       <div className="h-[10px] w-full bg-tertiarygrey-670"></div>
       <Section
-        image="https://img.freepik.com/free-photo/ai-cloud-concept-with-robot-face_23-2149739753.jpg?size=626&ext=jpg&uid=R63965761&ga=GA1.2.1046262473.1674666620&semt=ais"
+        animationData={ai}
         heading="NFT Generator AI"
         description="This AI will automatically create a digital art for which an NFT can be created."
         imagePosition="right"
       />
       <div className="h-[10px] w-full bg-tertiarygrey-670"></div>
       <Section
-        image="https://img.freepik.com/free-photo/ai-cloud-concept-with-robot-face_23-2149739753.jpg?size=626&ext=jpg&uid=R63965761&ga=GA1.2.1046262473.1674666620&semt=ais"
-        heading="NFT Generator AI"
+        animationData={audit}
+        heading="Trustworthy Audits"
         description="This AI will automatically create a digital art for which an NFT can be created."
         imagePosition="left"
       />
       <div className="h-[10px] w-full bg-tertiarygrey-670"></div>
       <Section
-        image="https://img.freepik.com/free-photo/ai-cloud-concept-with-robot-face_23-2149739753.jpg?size=626&ext=jpg&uid=R63965761&ga=GA1.2.1046262473.1674666620&semt=ais"
-        heading="NFT Generator AI"
+        animationData={transperant2}
+        heading="Complete Transperancy"
         description="This AI will automatically create a digital art for which an NFT can be created."
         imagePosition="right"
       />
+      <div className="h-[10px] w-full bg-tertiarygrey-670"></div>
+      <Section2 />
+      <div className="h-[10px] w-full bg-tertiarygrey-670"></div>
+      <Section3 />
     </>
   );
 }

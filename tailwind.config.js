@@ -28,7 +28,7 @@ module.exports = {
           100: "#fee2e2",
           150: "#D10000",
           400: "#DF1010",
-          500: "#9E2B25"
+          500: "#9E2B25",
         },
         tertiaryViolet: "#8B5BDC",
         tertiaryRed: "#DF1010",
@@ -56,6 +56,7 @@ module.exports = {
           650: "#EEEEEE",
           660: "#CECECE",
           670: "#222222",
+          680: "#2c2c2c",
         },
         tertiaryblue: { 50: "#256BD3", 60: "#E5EFFF", 100: "165FCC" },
         navyblue: {

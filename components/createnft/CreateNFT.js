@@ -18,7 +18,7 @@ const ReactQuill =
 function CreateNFT(props) {
   const [imageInput, setImageInput] = useState("");
 
-  const blockChainCtx  = useContext(BlockChainContext);
+  // const blockChainCtx  = useContext(BlockChainContext);
 
   const nameInput = useInput("", (name) => {
     return name?.length > 0;
