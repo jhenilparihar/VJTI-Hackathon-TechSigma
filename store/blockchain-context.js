@@ -151,7 +151,7 @@ export const BlockChainContextProvider = (props) => {
           allUserProfile[address] = profile;
         }
         console.log(totalTokensMinted);
-        totalTokensMinted = parseInt(totalTokensMinted)
+        totalTokensMinted = parseInt(totalTokensMinted);
         setTotalMinted(totalTokensMinted);
         setLoading(false);
       } else {
@@ -159,6 +159,7 @@ export const BlockChainContextProvider = (props) => {
       }
     }
   };
+
   const getProfileDetails = async (address) => {
     const cp = await NFTContract.methods.allProfiles(address).call();
 
@@ -217,6 +218,150 @@ export const BlockChainContextProvider = (props) => {
     }
   };
 
+  // new ipfs//
+
+  const uploadFileToIPFS = async (fileBlob) => {
+    const apiKey =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDE5NzkzNUM4NUQxODZmNEJCN2NlN2U1RjhGYjY4NWQ4NUJlY0ZkREEiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY3NjE5OTY3NzU0MywibmFtZSI6ImhhcnNoQDIzMDQifQ.gEWeVVohValCGdXRyGorzcYkc0umfpjcJOsPJxDMkQU";
+
+    var config = {
+      method: "post",
+      url: "https://api.nft.storage/upload",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "image/jpeg",
+      },
+      data: fileBlob,
+    };
+
+    const fileUploadResponse = await axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        return response.data;
+      })
+      .catch(function (error) {
+        console.log(error);
+        return error;
+      });
+
+    return fileUploadResponse;
+  };
+
+  //end//
+
+  const mintMyNFT = async (fileUrl, name, tokenPrice, description) => {
+    var months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    var currentTime = new Date();
+    // returns the month (from 0 to 11)
+    var month = months[currentTime.getMonth()];
+
+    // returns the day of the month (from 1 to 31)
+    var day = currentTime.getDate();
+
+    // returns the year (four digits)
+    var year = currentTime.getFullYear();
+    const overAllDate = month + " " + day + ", " + year;
+    var time =
+      currentTime.getHours() +
+      ":" +
+      currentTime.getMinutes() +
+      ":" +
+      currentTime.getSeconds();
+    var dateTime = overAllDate + " at " + time;
+    setLoading(true);
+
+    const nameIsUsed = await NFTContract.methods.tokenNameExists(name).call();
+
+    const imageIsUsed = await NFTContract.methods
+      .tokenImageExists(fileUrl)
+      .call();
+
+    if (!nameIsUsed && !imageIsUsed) {
+      let previousTokenId;
+      previousTokenId = await NFTContract.methods.NFTCounter().call();
+      previousTokenId = parseInt(previousTokenId);
+      const tokenId = previousTokenId + 1;
+      const tokenObject = {
+        tokenName: "DeepSpace",
+        tokenSymbol: "DS",
+        tokenId: `${tokenId}`,
+        name: name,
+        imageUrl: fileUrl,
+        description: description,
+      };
+      const metadataUploadResponse = await uploadFileToIPFS(
+        JSON.stringify(tokenObject)
+      );
+      // const cid = await ipfs.add(JSON.stringify(tokenObject));
+      let tokenURI = `https://alchemy.mypinata.cloud/ipfs/${metadataUploadResponse.value.cid}`;
+      const price = window.web3.utils.toWei(tokenPrice.toString(), "ether");
+
+      NFTContract.methods
+        .mintNFT(name, tokenURI, price, fileUrl, dateTime)
+        .send({ from: accountAddress })
+        .on("confirmation", () => {
+          localStorage.setItem(accountAddress, new Date().getTime());
+          setLoading(false);
+          window.location.reload();
+        });
+    } else {
+      if (nameIsUsed) {
+        setNameIsUsed(true);
+        setLoading(false);
+      } else if (imageIsUsed) {
+        setImageIsUsed(true);
+        setLoading(false);
+      }
+    }
+  };
+
+  const toggleForSale = (tokenId) => {
+    setLoading(true);
+    NFTContract.methods
+      .toggleForSale(tokenId)
+      .send({ from: accountAddress })
+      .on("confirmation", () => {
+        setLoading(false);
+        window.location.reload();
+      });
+  };
+
+  const changeTokenPrice = (tokenId, newPrice) => {
+    setLoading(true);
+    const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
+    NFTContract.methods
+      .changeTokenPrice(tokenId, newTokenPrice)
+      .send({ from: accountAddress })
+      .on("confirmation", () => {
+        setLoading(false);
+        window.location.reload();
+      });
+  };
+
+  const buyNFT = (tokenId, price) => {
+    setLoading(true);
+    NFTContract.methods
+      .buyToken(tokenId)
+      .send({ from: accountAddress, value: price })
+      .on("confirmation", () => {
+        setLoading(false);
+        window.location.reload();
+      });
+  };
+
   const blockChainCtx = {
     accountAddress: accountAddress,
     accountBalance: accountBalance,
@@ -234,6 +379,7 @@ export const BlockChainContextProvider = (props) => {
     lastMintTime: lastMintTime,
     currentProfile: currentProfile,
     allUserProfile: allUserProfile,
+    mintMyNFT: mintMyNFT,
   };
 
   useEffect(() => {
