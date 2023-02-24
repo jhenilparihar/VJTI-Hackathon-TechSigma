@@ -130,24 +130,27 @@ function ImageUpload(props) {
               url={previewImage}
             />
           )}
-          <div className="flex justify-end space-x-5 mt-4">
-            <button
-              type="button"
-              onClick={openUploadDialogHandler}
-              className={`px-4 py-3 rounded-md border-2 text-white hover:text-tertiaryred-50 hover:border-tertiaryred-50 transition-all duration-500`}
-            >
-              <FontAwesomeIcon icon={faUpload} />
-            </button>
-            {props?.enableReset && (
+          <div className="flex justify-between mt-4">
+          <button type="button" onClick={props?.onUploadToIPFS}>Upload To IPFS</button>
+            <div className="space-x-5 ">
               <button
                 type="button"
-                // disabled={previewImage === props?.image}
-                onClick={resetImageHandler}
+                onClick={openUploadDialogHandler}
                 className={`px-4 py-3 rounded-md border-2 text-white hover:text-tertiaryred-50 hover:border-tertiaryred-50 transition-all duration-500`}
               >
-                <FontAwesomeIcon icon={faTrash} />
+                <FontAwesomeIcon icon={faUpload} />
               </button>
-            )}
+              {props?.enableReset && (
+                <button
+                  type="button"
+                  // disabled={previewImage === props?.image}
+                  onClick={resetImageHandler}
+                  className={`px-4 py-3 rounded-md border-2 text-white hover:text-tertiaryred-50 hover:border-tertiaryred-50 transition-all duration-500`}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}

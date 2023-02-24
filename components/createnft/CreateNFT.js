@@ -1,6 +1,6 @@
 import Input from "../common/Input";
 import useInput from "@/hooks/use-input";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import "react-quill/dist/quill.snow.css";
 import ImageUpload from "../common/ImageUpload";
 import BlockChainContext from "@/store/blockchain-context";
@@ -18,7 +18,7 @@ const ReactQuill =
 function CreateNFT(props) {
   const [imageInput, setImageInput] = useState("");
 
-  // const blockChainCtx  = useContext(BlockChainContext);
+  const blockChainCtx = useContext(BlockChainContext);
 
   const nameInput = useInput("", (name) => {
     return name?.length > 0;
@@ -45,6 +45,10 @@ function CreateNFT(props) {
 
   const [putForSaleInput, setPutForSaleInput] = useState(false);
 
+  const [fileURL, setFileURL] = useState("");
+
+  const [formHasError, setFormHasError] = useState(true);
+
   const imageInputChangeHandler = (newImage) => {
     setImageInput(newImage);
   };
@@ -61,9 +65,44 @@ function CreateNFT(props) {
     }
   };
 
+  const uploadToIPFSHandler = async () => {
+    const fileUploadResponse = await blockChainCtx?.uploadFileToIPFS(
+      imageInput
+    );
+    const IPFS = fileUploadResponse?.value?.cid;
+    const fileLink = `https://alchemy.mypinata.cloud/ipfs/${IPFS}/`;
+    setFileURL(fileLink);
+    console.log("hey", fileLink);
+  };
+
   const formSubmitHandler = async (event) => {
     event.preventDefault();
+
+    blockChainCtx?.mintMyNFT(
+      fileURL,
+      nameInput?.enteredValue,
+      priceInput?.enteredValue,
+      descriptionInput
+    );
+    nameInput?.resetInputHandler();
+    setImageInput("");
+    priceInput?.resetInputHandler();
+    setFileURL("");
+    setDescriptionInput("");
+    setDescriptionLength(0);
+    // else {
+
+    // }
   };
+
+  useEffect(() => {
+    const formIsValid =
+      fileURL &&
+      !nameInput?.inputHasError &&
+      descriptionInput &&
+      !priceInput?.inputHasError;
+    setFormHasError(!formIsValid);
+  }, [fileURL, nameInput, priceInput, descriptionInput]);
 
   return (
     <div className="px-16 pt-20 pb-10">
@@ -82,6 +121,7 @@ function CreateNFT(props) {
               className="h-[550px] w-full flex-shrink-0 space-y-8"
               imageDimensions="max-h-[450px] max-w-full"
               uploadBoxDimensions="h-[450px] w-full flex-shrink-0 space-y-10"
+              onUploadToIPFS={uploadToIPFSHandler}
             />
           </div>
           <div className="flex-grow flex-shrink-0 space-y-6">
@@ -146,7 +186,13 @@ function CreateNFT(props) {
           </div>
         </div>
         <div className="flex justify-end">
-          <button className="px-4 py-2 border-2 rounded-md border-tertiaryred-50 text-tertiaryred-50 text-base font-display font-semibold" type="submit">Create</button>
+          <button
+            disabled={formHasError}
+            className="px-4 py-2 border-2 rounded-md border-tertiaryred-50 text-tertiaryred-50 text-base font-display font-semibold"
+            type="submit"
+          >
+            Create
+          </button>
         </div>
       </form>
     </div>
