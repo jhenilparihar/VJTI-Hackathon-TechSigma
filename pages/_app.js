@@ -4,16 +4,15 @@ import Layout from "@/components/Layout";
 import React from "react";
 import { BlockChainContextProvider } from "@/store/blockchain-context";
 
-class App extends React.Component {
-  render() {
+function App ({Component, pageProps}){
     return (
       <BlockChainContextProvider>
         <Layout>
-          <this.props.Component {...this.props.pageProps} />
+          <Component {...pageProps} />
         </Layout>
      </BlockChainContextProvider>
     );
   }
-}
+
 
 export default App;

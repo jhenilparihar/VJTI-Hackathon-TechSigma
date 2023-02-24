@@ -44,10 +44,8 @@ export const BlockChainContextProvider = (props) => {
   const [currentProfile, setCurrentProfile] = useState("");
   const [allUserProfile, setAllUserProfile] = useState({});
 
-  console.log(NFTs);
-
+  // console.log("dsd", NFTContract)
   const loadWeb3 = async () => {
-    
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
     } else if (window.web3) {
@@ -83,53 +81,14 @@ export const BlockChainContextProvider = (props) => {
       const networkData = Marketplace.networks[networkId];
       if (networkData) {
         setLoading(true);
-        const NFTContract = new web3.eth.Contract(
+        const NFTContract1 = new web3.eth.Contract(
           Marketplace.abi,
           networkData.address
         );
-        setNFTContract(NFTContract);
+        setNFTContract(NFTContract1);
         setContractDetected(true);
         localStorage.setItem("NFTContract", NFTContract);
         localStorage.setItem("contractDetected", contractDetected);
-
-        const isProfileSet = await NFTContract?.methods
-          ?.isProfileSet(accounts[0])
-          .call();
-
-        if (!isProfileSet) {
-          var months = [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-          ];
-          var currentTime = new Date();
-          // returns the month (from 0 to 11)
-          var month = months[currentTime.getMonth()];
-
-          // returns the day of the month (from 1 to 31)
-          var day = currentTime.getDate();
-
-          // returns the year (four digits)
-          var year = currentTime.getFullYear();
-          const overAllDate = month + " " + day + " " + year;
-          await uploadProfile(
-            "https://ipfs.infura.io/ipfs/QmeAcsFZfRd719RHMivPUitJpXzH54k8d3CXpmvmLZnF7A",
-            "https://bafybeih5pgcobf6hpgf2pexmkhfsk55zr4dywrazgybk7u2fp6w4webkxu.ipfs.infura-ipfs.io/",
-            "Unnamed",
-            "No description",
-            "abc@gmail.com",
-            overAllDate
-          );
-        }
 
         const NFTCount = await NFTContract?.methods?.NFTCounter().call();
         setNFTCount(NFTCount);
@@ -167,14 +126,14 @@ export const BlockChainContextProvider = (props) => {
           profile_counter <= ProfileCounter;
           profile_counter++
         ) {
-          const address = await NFTContract?.methods
-            ?.allAddress(profile_counter)
+          const address = await NFTContract.methods
+            .allAddress(profile_counter)
             .call();
-          const profile = await NFTContract?.methods
-            ?.allProfiles(address)
+          const profile = await NFTContract.methods
+            .allProfiles(address)
             .call();
 
-          allUserProfile[address] = profile;
+          setAllUserProfile({...allUserProfile,address:profile})
         }
         totalTokensMinted = parseInt(totalTokensMinted);
         setTotalMinted(totalTokensMinted);
@@ -199,31 +158,59 @@ export const BlockChainContextProvider = (props) => {
     // window.location.reload();
   };
 
-  const uploadProfile = async (
-    bannerHash,
-    imageHash,
-    name,
-    description,
-    email,
-    date
-  ) => {
-    NFTContract?.methods
-      ?.addUserProfile(
-        bannerHash,
-        imageHash,
-        name,
-        description,
-        accountAddress,
-        email,
-        date
-      )
-      .send({ from: accountAddress })
-      .on("confirmation", () => {
-        localStorage.setItem(accountAddress, new Date().getTime());
-        setLoading(false);
-        window.location.reload();
-      });
+  const uploadProfile = async () => {
+    const isProfileSet = await NFTContract?.methods
+      ?.isProfileSet(accountAddress)
+      .call();
+
+    if (!isProfileSet) {
+      var months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      var currentTime = new Date();
+      // returns the month (from 0 to 11)
+      var month = months[currentTime.getMonth()];
+
+      // returns the day of the month (from 1 to 31)
+      var day = currentTime.getDate();
+
+      // returns the year (four digits)
+      var year = currentTime.getFullYear();
+      const overAllDate = month + " " + day + " " + year;
+      NFTContract.methods
+        .addUserProfile(
+          "https://ipfs.infura.io/ipfs/QmeAcsFZfRd719RHMivPUitJpXzH54k8d3CXpmvmLZnF7A",
+          "https://bafybeih5pgcobf6hpgf2pexmkhfsk55zr4dywrazgybk7u2fp6w4webkxu.ipfs.infura-ipfs.io/",
+          "Unnamed",
+          "No description",
+          accountAddress,
+          "abc@gmail.com",
+          overAllDate
+        )
+        .send({ from: accountAddress })
+        .on("confirmation", () => {
+          localStorage.setItem(this.state.accountAddress, new Date().getTime());
+          this.setState({ loading: false });
+          // window.location.reload();
+        });
+    }
+
+    console.log(accountAddress);
   };
+  useEffect(()=>{
+   console.log(allUserProfile,'all')
+  },[allUserProfile])
 
   const setMetaData = async () => {
     if (NFTs.length !== 0) {
@@ -430,12 +417,12 @@ export const BlockChainContextProvider = (props) => {
   //   //   return;
   //   // }
   // }, []);
-
+  const getData = async () => {
+    await loadWeb3();
+    await loadBlockchainData();
+  };
   useEffect(() => {
-    const getData = async () => {
-      await loadWeb3();
-      await loadBlockchainData();
-    };
+    
 
     getData();
   }, []);
@@ -447,6 +434,23 @@ export const BlockChainContextProvider = (props) => {
 
     getData();
   }, [NFTs?.length]);
+  const setProfile = async () => {
+    console.log(NFTContract, accountAddress);
+    if (accountAddress && NFTContract) {
+       {
+        console.log("gasdgjak");
+        await uploadProfile();
+      }
+    }
+  };
+  useEffect(() => {
+   
+    setProfile();
+  }, [NFTContract]);
+
+  useEffect(() => {
+    console.log("sfhs", NFTContract);
+  }, [NFTContract]);
 
   return (
     <BlockChainContext.Provider value={blockChainCtx}>
