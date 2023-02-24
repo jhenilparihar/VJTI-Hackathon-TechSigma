@@ -8,3 +8,11 @@ body {
   margin: 0;
   background-color: #191919;
 }
+.grad{
+  color:red
+}
+.bb{
+  border-color: #ff1818;
+  border-width: 1px;
+  border-style: solid;
+}
