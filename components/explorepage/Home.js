@@ -1,8 +1,9 @@
 import CurrentBanner from "./CurrentBanner";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Carousel from "../common/Carousel";
 import TrendingNow from "./TrendingNow";
 import BlockChainContext from "@/store/blockchain-context";
+import GenericModal from "../common/GenericModal";
 
 const recommendations = [
   "https://www.indiewire.com/wp-content/uploads/2017/09/imperial-dreams-2014.jpg?w=426",
@@ -16,12 +17,17 @@ const recommendations = [
 
 function Home(props) {
   const blockChainCtx = useContext(BlockChainContext);
+  const [currentTokenId, setCurrentTokenId] = useState("");
+
+  const NFTClickHandler = (tokenId) => {
+    setCurrentTokenId(tokenId);
+  }
 
   return (
     <div className="pb-10">
       <CurrentBanner />
       <div className="px-16">
-        <Carousel items={blockChainCtx?.NFTs} className="" />
+        <Carousel items={blockChainCtx?.NFTs} className="" onCardClick={NFTClickHandler}/>
       </div>
       <TrendingNow items={recommendations} />
     </div>

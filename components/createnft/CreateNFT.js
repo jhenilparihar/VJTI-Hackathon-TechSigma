@@ -4,6 +4,7 @@ import { useState, useContext, useEffect } from "react";
 import "react-quill/dist/quill.snow.css";
 import ImageUpload from "../common/ImageUpload";
 import BlockChainContext from "@/store/blockchain-context";
+import dynamic from "next/dynamic";
 
 const toolbarContainer = [
   ["bold", "italic", "underline"], // toggled buttons
