@@ -1,18 +1,25 @@
 import GenericModal from "@/components/common/GenericModal";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Owner from "./Owner";
 import OwnerList from "./OwnerList";
 import PriceChart from "./PriceChart";
 import TimePickers from "@/components/common/Timepicker";
 import BidForm from "../Bidding/BidForm";
 import Link from "next/link";
+import BlockChainContext from "@/store/blockchain-context";
 
 const Nftdet = (props) => {
-  const [currentTab, setTab] = useState({
+  let tab=  props.buy?{
+    owner: false,
+    price: true,
+    bid: false,
+  }:{
     owner: true,
     price: false,
     bid: false,
-  });
+  }
+  const [currentTab, setTab] = useState(tab);
+  const ctx = useContext(BlockChainContext);
   const [bid, setBidding] = useState(false);
   const [price, setPrice] = useState(false);
   const data = {
@@ -28,27 +35,24 @@ const Nftdet = (props) => {
   };
 
   return (
-    <div className="flex px-4 py-2">
-      <img src={props?.tokenImage} className="w-[38%] h-[40%]"></img>
+    <div className="flex px-4 py-2 justify-center items-center ">
+      <img src={props?.tokenImage} className="w-[48%] h-[70%]"></img>
       <div className="w-[62%] flex flex-col px-5 py-2 ">
         <h1 className="  text-2xl font-medium font-Heading w-full">
           {props?.tokenName}
         </h1>
         <p className=" text-sm  text-tertiarygrey-450 py-2 border-b-2 border-tertiarygrey-150">
-          {props?.metaData?.description}
+          {props?.metaData?.description.replaceAll("\<.*?\>", "")}
         </p>
         {!bid && (
           <div>
             <div className="flex space-x-4 my-5">
+              <Owner img={ctx.allUserProfile[props.currentOwner]?.imageHash} deg="Owner"
+               name={ctx.allUserProfile[props.currentOwner]?.name}></Owner>
               <Owner
-                img=""
-                deg="Owner"
-                name={""}
-              ></Owner>
-              <Owner
-                img={"https://niftykit.com/wp-content/uploads/2021/08/bayc.jpg"}
+                img={ctx.allUserProfile[props.mintedBy]?.imageHash}
                 deg="Creator"
-                name="@par222"
+                name={ctx.allUserProfile[props.mintedBy]?.name}
               ></Owner>
             </div>
             {
@@ -57,7 +61,10 @@ const Nftdet = (props) => {
                   Price
                 </p>
                 <p className="font-medium text-lg my-2 flex items-center">
-                  <span>{props.price} </span>
+                  <span>
+                    {props?.price &&
+                      window?.web3?.utils?.fromWei(props?.price + "")}{" "}
+                  </span>
                   <span className="text-tertiarygrey-50 font-display text-xs mx-1">
                     (7.05 USD)
                   </span>
@@ -70,7 +77,7 @@ const Nftdet = (props) => {
                     </Link>
                   </div>
                 </p>
-                {!price && (
+                {!price && !props.buy && (
                   <button
                     className="bg-tertiaryred-150 my-2 text-sm py-1 px-3 rounded-sm font-medium"
                     onClick={() => setPrice(true)}
@@ -79,20 +86,22 @@ const Nftdet = (props) => {
                   </button>
                 )}
 
-                {price && (
+                {price && !props.buy && (
                   <form className="flex space-x-3 items-center">
                     <input
                       className="py-1 border-b-2 border-tertiaryred-50 bg-[#232323] focus:outline-none w-[70%]"
                       type={"number"}
                       defaultValue={props.price.split(" ")[0]}
                     ></input>
-                    <button type="submit" className="bg-white py-1 px-2 rounded-sm" >
+                    <button
+                      type="submit"
+                      className="bg-white py-1 px-2 rounded-sm"
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 512 512"
                         width={20}
                         height={20}
-                        
                       >
                         <path d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
                       </svg>
@@ -101,9 +110,9 @@ const Nftdet = (props) => {
                 )}
               </div>
             }
-            <div>
+            {<div>
               <nav className="text-sm flex space-x-10 w-[100%] py-0  my-2 border-b-[2px] border-tertiarygrey-150 cursor-pointer">
-                <span
+                {!props.buy &&<span
                   className={
                     currentTab.owner
                       ? "border-b-4 py-2 border-tertiaryred-50"
@@ -114,8 +123,8 @@ const Nftdet = (props) => {
                   }}
                 >
                   Owners
-                </span>
-                <span
+                </span>}
+                {<span
                   className={
                     currentTab.price
                       ? "border-b-4 py-2 border-tertiaryred-50"
@@ -126,8 +135,8 @@ const Nftdet = (props) => {
                   }}
                 >
                   Price History
-                </span>
-                <span
+                </span>}
+                {!props.buy &&<span
                   className={
                     currentTab.bid
                       ? "border-b-4 py-2 border-tertiaryred-50"
@@ -138,11 +147,11 @@ const Nftdet = (props) => {
                   }}
                 >
                   Bidding Status
-                </span>
+                </span>}
               </nav>
               {currentTab.owner && <OwnerList owners={props.owner}></OwnerList>}
               {currentTab.price && <PriceChart data={data}></PriceChart>}
-              {currentTab.bid && (
+              {currentTab.bid &&!props.buy&& (
                 <>
                   <div className="flex space-x-2 items-center justify-center pt-6">
                     <svg
@@ -192,7 +201,7 @@ const Nftdet = (props) => {
                   </div>
                 </>
               )}
-            </div>
+            </div>}
           </div>
         )}
         {bid && (

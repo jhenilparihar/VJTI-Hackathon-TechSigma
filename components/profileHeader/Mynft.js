@@ -1,4 +1,9 @@
+import { useContext } from "react";
+import BlockChainContext from "@/store/blockchain-context";
+
 const Mynft = (props) => {
+    const ctx=useContext(BlockChainContext)
+   // console.log(ctx.allUserProfile[ctx.NFTs])
 const handlenft=()=>{
     props.openModal(props)
 }

@@ -10,6 +10,8 @@ function Carousel(props) {
 
   const blockChainCtx = useContext(BlockChainContext);
 
+  const blockChainCtx = useContext(BlockChainContext);
+
   let translateWidth = itemSet * (carouselRef.current?.clientWidth - 225);
 
   const getPrevitemsHandler = () => {
@@ -39,7 +41,7 @@ function Carousel(props) {
     return (
       <div
         key={index}
-        onClick={props?.onCardClick}
+        onClick={()=>props?.onCardClick(item?.tokenId)}
         className="rounded-lg h-[400px] w-[270px] flex-shrink-0 transform transition duration-500 hover:scale-110 cursor-pointer"
       >
         <img

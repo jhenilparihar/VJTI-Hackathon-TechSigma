@@ -3,8 +3,6 @@ import Web3 from "web3";
 import Marketplace from "../abis/Marketplace.json";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { create } from "ipfs-http-client";
-import { Buffer } from "buffer";
 
 const blockChainObj = {
   accountAddress: "",
@@ -23,6 +21,7 @@ const blockChainObj = {
   lastMintTime: null,
   currentProfile: "",
   allUserProfile: {},
+  buyNFT:()=>{}
 };
 
 const BlockChainContext = React.createContext(blockChainObj);
@@ -63,8 +62,7 @@ export const BlockChainContextProvider = (props) => {
 
   const loadBlockchainData = async () => {
     // if(!metamaskConnected) {
-    // await connectToMetamask();
-    await connectToMetamask();
+     await connectToMetamask();
     // }
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
@@ -100,8 +98,7 @@ export const BlockChainContextProvider = (props) => {
         localStorage.setItem("NFTCount", NFTCount);
         for (var i = 1; i <= NFTCount; i++) {
           const nft = await NFTContract1?.methods?.allNFTs(i).call();
-          const nft = await NFTContract1?.methods?.allNFTs(i).call();
-          console.log("hhg", nft);
+  
           setNFTs((prevState) => {
             let flag = false;
             for (let i of prevState) {
@@ -204,8 +201,6 @@ export const BlockChainContextProvider = (props) => {
         .addUserProfile(
           "https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
           "https://blogs.airdropalert.com/wp-content/uploads/2021/12/Lazy-Lion-NFT-1005x1024.png",
-          "https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-          "https://blogs.airdropalert.com/wp-content/uploads/2021/12/Lazy-Lion-NFT-1005x1024.png",
           "@newUser",
           "New on the platform",
           accountAddress,
@@ -214,8 +209,6 @@ export const BlockChainContextProvider = (props) => {
         )
         .send({ from: accountAddress })
         .on("confirmation", () => {
-          localStorage.setItem(accountAddress, new Date().getTime());
-          setLoading(false);
           const router = useRouter();
           localStorage.setItem(this.state.accountAddress, new Date().getTime());
           this.setState({ loading: false });
@@ -230,8 +223,6 @@ export const BlockChainContextProvider = (props) => {
     if (NFTs.length !== 0) {
       NFTs.map(async (nft) => {
         const result = await fetch(nft?.tokenURI);
-        console.log(nft.tokenURI);
-        const result = await fetch(nft?.tokenURI);
         const metaData = await result.json();
         setNFTs((prevState) => {
           const newState = prevState.map((nft) => {
@@ -242,7 +233,7 @@ export const BlockChainContextProvider = (props) => {
                 }
               : nft;
           });
-          console.log(newState)
+          console.log(newState);
           return newState;
         });
       });
@@ -417,6 +408,7 @@ export const BlockChainContextProvider = (props) => {
     allUserProfile: allUserProfile,
     mintMyNFT: mintMyNFT,
     uploadFileToIPFS: uploadFileToIPFS,
+    buyNFT:buyNFT
   };
 
   // useEffect(() => {
