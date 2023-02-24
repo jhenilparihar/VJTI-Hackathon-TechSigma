@@ -1,5 +1,5 @@
 import CurrentBanner from "./CurrentBanner";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Carousel from "../common/Carousel";
 import TrendingNow from "./TrendingNow";
 import BlockChainContext from "@/store/blockchain-context";
@@ -19,10 +19,8 @@ const recommendations = [
 function Home(props) {
   const blockChainCtx = useContext(BlockChainContext);
   const [currentTokenId, setCurrentTokenId] = useState("");
-
-  const NFT = blockChainCtx?.NFTs?.filter((nft) => {
-    return nft?.tokenId === currentTokenId;
-  })[0]
+  const [NFT,setNFT]=useState({})
+ 
 
   const NFTClickHandler = (tokenId) => {
     setCurrentTokenId(tokenId);
@@ -33,8 +31,20 @@ function Home(props) {
   }
 
   const buyNFTHandler = () => {
+    blockChainCtx.buyNFT(NFT.tokenId,NFT.price)
 
   }
+  useEffect(()=>{
+    if(currentTokenId)
+    {
+    setNFT(blockChainCtx.NFTs.filter((n)=>n.tokenId==currentTokenId)[0])
+    console.log(NFT)
+  }
+    
+  },[currentTokenId])
+  useEffect(()=>{
+    console.log(NFT)
+  },[NFT])
 
   return (
     <>
@@ -51,14 +61,15 @@ function Home(props) {
       </div>
       {currentTokenId && (
         <GenericModal
-          className="w-[60%] h-[65%]"
+          className="w-[60%] h-[30%%]"
           closeModal={closeModalHandler}
           posText="Buy"
           negText="Cancel"
           posHandler={buyNFTHandler}
           negHandler={closeModalHandler}
         >
-          <Nftdet {...NFT} currentAccount={blockChainCtx?.accountAddress}></Nftdet>
+          <Nftdet {...NFT} buy={true}></Nftdet>
+         
         </GenericModal>
       )}
     </>

@@ -8,6 +8,8 @@ module.exports = {
       port: 7545,
       network_id: "*", // Match any network id
     },
+    gas: 8000000,
+
   },
   contracts_directory: "./contracts/",
   contracts_build_directory: "./abis/",

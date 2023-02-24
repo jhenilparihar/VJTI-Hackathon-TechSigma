@@ -21,6 +21,7 @@ const blockChainObj = {
   lastMintTime: null,
   currentProfile: "",
   allUserProfile: {},
+  buyNFT:()=>{}
 };
 
 const BlockChainContext = React.createContext(blockChainObj);
@@ -61,7 +62,7 @@ export const BlockChainContextProvider = (props) => {
 
   const loadBlockchainData = async () => {
     // if(!metamaskConnected) {
-    // await connectToMetamask();
+     await connectToMetamask();
     // }
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
@@ -97,8 +98,7 @@ export const BlockChainContextProvider = (props) => {
         localStorage.setItem("NFTCount", NFTCount);
         for (var i = 1; i <= NFTCount; i++) {
           const nft = await NFTContract1?.methods?.allNFTs(i).call();
-          const nft = await NFTContract1?.methods?.allNFTs(i).call();
-          console.log("hhg", nft);
+  
           setNFTs((prevState) => {
             let flag = false;
             for (let i of prevState) {
@@ -232,7 +232,7 @@ export const BlockChainContextProvider = (props) => {
                 }
               : nft;
           });
-          console.log(newState)
+          console.log(newState);
           return newState;
         });
       });
@@ -409,6 +409,7 @@ export const BlockChainContextProvider = (props) => {
     allUserProfile: allUserProfile,
     mintMyNFT: mintMyNFT,
     uploadFileToIPFS: uploadFileToIPFS,
+    buyNFT:buyNFT
   };
 
   // useEffect(() => {
@@ -429,10 +430,10 @@ export const BlockChainContextProvider = (props) => {
     getData();
   }, []);
 
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     await setMetaData();
-  //   };
+  useEffect(() => {
+    const getData = async () => {
+      await setMetaData();
+    };
 
     getData();
   }, [NFTs?.length]);
