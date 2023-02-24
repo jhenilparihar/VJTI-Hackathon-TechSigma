@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 import Web3 from "web3";
 import Marketplace from "../abis/Marketplace.json";
+import axios from "axios";
 
 const blockChainObj = {
   accountAddress: "",
@@ -26,6 +27,7 @@ const BlockChainContext = React.createContext(blockChainObj);
 export default BlockChainContext;
 
 export const BlockChainContextProvider = (props) => {
+
   const [accountAddress, setAccountAddress] = useState("");
   const [accountBalance, setAccountBalance] = useState(0);
   const [NFTContract, setNFTContract] = useState("");
@@ -42,6 +44,9 @@ export const BlockChainContextProvider = (props) => {
   const [lastMintTime, setLastMintTime] = useState(null);
   const [currentProfile, setCurrentProfile] = useState("");
   const [allUserProfile, setAllUserProfile] = useState({});
+
+  console.log("NFT", NFTContract)
+
 
   const loadWeb3 = async () => {
     if (window.ethereum) {
@@ -80,8 +85,8 @@ export const BlockChainContextProvider = (props) => {
         setNFTContract(NFTContract);
         setContractDetected(true);
 
-        const isProfileSet = await NFTContract.methods
-          .isProfileSet(accounts[0])
+        const isProfileSet = await NFTContract?.methods
+          ?.isProfileSet(accounts[0])
           .call();
 
         if (!isProfileSet) {
@@ -119,34 +124,34 @@ export const BlockChainContextProvider = (props) => {
           );
         }
 
-        const NFTCount = await NFTContract.methods.NFTCounter().call();
+        const NFTCount = await NFTContract?.methods?.NFTCounter().call();
         setNFTCount(NFTCount);
         for (var i = 1; i <= NFTCount; i++) {
-          const nft = await NFTContract.methods.allNFTs(i).call();
+          const nft = await NFTContract?.methods?.allNFTs(i).call();
           setNFTs((prevState) => {
             const newState = [...prevState, nft];
             return newState;
           });
         }
-        let totalTokensMinted = await NFTContract.methods
-          .getNumberOfTokensMinted()
+        let totalTokensMinted = await NFTContract?.methods
+          ?.getNumberOfTokensMinted()
           .call();
 
-        const cp = await NFTContract.methods.allProfiles(accounts[0]).call();
+        const cp = await NFTContract?.methods?.allProfiles(accounts[0]).call();
 
         setCurrentProfile(cp);
 
-        const ProfileCounter = await NFTContract.methods.UserCounter().call();
+        const ProfileCounter = await NFTContract?.methods?.UserCounter().call();
 
         for (
           var profile_counter = 1;
           profile_counter <= ProfileCounter;
           profile_counter++
         ) {
-          const address = await NFTContract.methods
-            .allAddress(profile_counter)
+          const address = await NFTContract?.methods
+            ?.allAddress(profile_counter)
             .call();
-          const profile = await NFTContract.methods.allProfiles(address).call();
+          const profile = await NFTContract?.methods?.allProfiles(address).call();
 
           allUserProfile[address] = profile;
         }
@@ -161,7 +166,7 @@ export const BlockChainContextProvider = (props) => {
   };
 
   const getProfileDetails = async (address) => {
-    const cp = await NFTContract.methods.allProfiles(address).call();
+    const cp = await NFTContract?.methods?.allProfiles(address).call();
 
     return cp;
   };
@@ -250,6 +255,7 @@ export const BlockChainContextProvider = (props) => {
   //end//
 
   const mintMyNFT = async (fileUrl, name, tokenPrice, description) => {
+    console.log("mint", fileUrl, name, tokenPrice, description)
     var months = [
       "January",
       "February",
@@ -283,15 +289,18 @@ export const BlockChainContextProvider = (props) => {
     var dateTime = overAllDate + " at " + time;
     setLoading(true);
 
-    const nameIsUsed = await NFTContract.methods.tokenNameExists(name).call();
+    const nameIsUsed = await NFTContract?.methods?.tokenNameExists(name).call();
 
-    const imageIsUsed = await NFTContract.methods
-      .tokenImageExists(fileUrl)
+    const imageIsUsed = await NFTContract?.methods
+      ?.tokenImageExists(fileUrl)
       .call();
+
+    console.log("image", imageIsUsed)
+    console.log("name", nameIsUsed)
 
     if (!nameIsUsed && !imageIsUsed) {
       let previousTokenId;
-      previousTokenId = await NFTContract.methods.NFTCounter().call();
+      previousTokenId = await NFTContract?.methods?.NFTCounter().call();
       previousTokenId = parseInt(previousTokenId);
       const tokenId = previousTokenId + 1;
       const tokenObject = {
@@ -309,8 +318,8 @@ export const BlockChainContextProvider = (props) => {
       let tokenURI = `https://alchemy.mypinata.cloud/ipfs/${metadataUploadResponse.value.cid}`;
       const price = window.web3.utils.toWei(tokenPrice.toString(), "ether");
 
-      NFTContract.methods
-        .mintNFT(name, tokenURI, price, fileUrl, dateTime)
+      NFTContract?.methods
+        ?.mintNFT(name, tokenURI, price, fileUrl, dateTime)
         .send({ from: accountAddress })
         .on("confirmation", () => {
           localStorage.setItem(accountAddress, new Date().getTime());
@@ -330,8 +339,8 @@ export const BlockChainContextProvider = (props) => {
 
   const toggleForSale = (tokenId) => {
     setLoading(true);
-    NFTContract.methods
-      .toggleForSale(tokenId)
+    NFTContract?.methods
+      ?.toggleForSale(tokenId)
       .send({ from: accountAddress })
       .on("confirmation", () => {
         setLoading(false);
@@ -342,8 +351,8 @@ export const BlockChainContextProvider = (props) => {
   const changeTokenPrice = (tokenId, newPrice) => {
     setLoading(true);
     const newTokenPrice = window.web3.utils.toWei(newPrice, "Ether");
-    NFTContract.methods
-      .changeTokenPrice(tokenId, newTokenPrice)
+    NFTContract?.methods
+      ?.changeTokenPrice(tokenId, newTokenPrice)
       .send({ from: accountAddress })
       .on("confirmation", () => {
         setLoading(false);
@@ -353,8 +362,8 @@ export const BlockChainContextProvider = (props) => {
 
   const buyNFT = (tokenId, price) => {
     setLoading(true);
-    NFTContract.methods
-      .buyToken(tokenId)
+    NFTContract?.methods
+      ?.buyToken(tokenId)
       .send({ from: accountAddress, value: price })
       .on("confirmation", () => {
         setLoading(false);
@@ -381,6 +390,7 @@ export const BlockChainContextProvider = (props) => {
     allUserProfile: allUserProfile,
     mintMyNFT: mintMyNFT,
     uploadFileToIPFS: uploadFileToIPFS,
+    
   };
 
   useEffect(() => {

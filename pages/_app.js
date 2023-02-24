@@ -229,7 +229,7 @@ class App extends React.Component {
               <Layout>
                 <this.props.Component {...this.props.pageProps} />
               </Layout>
-            </BlockChainContextProvider>
+           </BlockChainContextProvider>
           </>
         )}
       </>
