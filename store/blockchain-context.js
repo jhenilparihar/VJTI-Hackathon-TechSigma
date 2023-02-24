@@ -27,7 +27,6 @@ const BlockChainContext = React.createContext(blockChainObj);
 export default BlockChainContext;
 
 export const BlockChainContextProvider = (props) => {
-
   const [accountAddress, setAccountAddress] = useState("");
   const [accountBalance, setAccountBalance] = useState(0);
   const [NFTContract, setNFTContract] = useState("");
@@ -44,9 +43,6 @@ export const BlockChainContextProvider = (props) => {
   const [lastMintTime, setLastMintTime] = useState(null);
   const [currentProfile, setCurrentProfile] = useState("");
   const [allUserProfile, setAllUserProfile] = useState({});
-
-  console.log("NFT", NFTContract)
-
 
   const loadWeb3 = async () => {
     if (window.ethereum) {
@@ -151,7 +147,9 @@ export const BlockChainContextProvider = (props) => {
           const address = await NFTContract?.methods
             ?.allAddress(profile_counter)
             .call();
-          const profile = await NFTContract?.methods?.allProfiles(address).call();
+          const profile = await NFTContract?.methods
+            ?.allProfiles(address)
+            .call();
 
           allUserProfile[address] = profile;
         }
@@ -223,8 +221,6 @@ export const BlockChainContextProvider = (props) => {
     }
   };
 
-  // new ipfs//
-
   const uploadFileToIPFS = async (fileBlob) => {
     const apiKey =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDE5NzkzNUM4NUQxODZmNEJCN2NlN2U1RjhGYjY4NWQ4NUJlY0ZkREEiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY3NjE5OTY3NzU0MywibmFtZSI6ImhhcnNoQDIzMDQifQ.gEWeVVohValCGdXRyGorzcYkc0umfpjcJOsPJxDMkQU";
@@ -252,10 +248,8 @@ export const BlockChainContextProvider = (props) => {
     return fileUploadResponse;
   };
 
-  //end//
-
   const mintMyNFT = async (fileUrl, name, tokenPrice, description) => {
-    console.log("mint", fileUrl, name, tokenPrice, description)
+    console.log("mint", fileUrl, name, tokenPrice, description);
     var months = [
       "January",
       "February",
@@ -295,8 +289,8 @@ export const BlockChainContextProvider = (props) => {
       ?.tokenImageExists(fileUrl)
       .call();
 
-    console.log("image", imageIsUsed)
-    console.log("name", nameIsUsed)
+    console.log("image", imageIsUsed);
+    console.log("name", nameIsUsed);
 
     if (!nameIsUsed && !imageIsUsed) {
       let previousTokenId;
@@ -388,9 +382,17 @@ export const BlockChainContextProvider = (props) => {
     lastMintTime: lastMintTime,
     currentProfile: currentProfile,
     allUserProfile: allUserProfile,
-    mintMyNFT: mintMyNFT,
+    loadWeb3: loadWeb3,
+    loadBlockchainData: loadBlockchainData,
+    getProfileDetails: getProfileDetails,
+    connectToMetamask: connectToMetamask,
+    uploadProfile: uploadProfile,
+    setMetaData: setMetaData,
     uploadFileToIPFS: uploadFileToIPFS,
-    
+    mintMyNFT: mintMyNFT,
+    toggleForSale: toggleForSale,
+    changeTokenPrice: changeTokenPrice,
+    buyNFT: buyNFT,
   };
 
   useEffect(() => {

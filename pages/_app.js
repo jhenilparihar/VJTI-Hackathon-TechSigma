@@ -9,35 +9,15 @@ import Loading from "@/components/Loading/Loading";
 import ConnectToMetamask from "@/components/ConnectMetamask/ConnectToMetamask";
 import ContractNotDeployed from "@/components/ContractNotDeployed/ContractNotDeployed";
 
+
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      accountAddress: "",
-      accountBalance: "",
-      NFTContract: null,
-      NFTCount: 0,
-      NFTs: [],
-      loading: true,
-      metamaskConnected: false,
-      contractDetected: false,
-      totalTokensMinted: 0,
-      totalTokensOwnedByAccount: 0,
-      nameIsUsed: false,
-      imageIsUsed: false,
-      imageHash: "",
-      lastMintTime: null,
-      currentProfile: "",
-      allUserProfile: {},
-    };
-  }
+
 
   componentWillMount = async () => {
     await this.loadWeb3();
     await this.loadBlockchainData();
     await this.setMetaData();
   };
-
 
   loadWeb3 = async () => {
     if (window?.ethereum) {
@@ -181,12 +161,6 @@ class App extends React.Component {
         this.setState({ loading: false });
         window.location.reload();
       });
-  };
-
-  getProfileDetails = async (address) => {
-    const cp = await this.state.NFTContract.methods.allProfiles(address).call();
-
-    return cp;
   };
 
   connectToMetamask = async () => {
