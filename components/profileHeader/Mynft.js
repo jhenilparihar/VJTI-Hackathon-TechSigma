@@ -13,7 +13,7 @@ const handlenft=()=>{
         <div className="text-xs flex justify-between my-2 pb-4 font-Heading mt-4">
           <p className="text-tertiarygrey-150">Price</p>
           <p>
-            <span className="font-bold mx-1">{props.price}</span>
+            <span className="font-bold mx-1 text-base ">{props.price}</span>
             <span className="text-tertiarygrey-150">(7.05 USD)</span>
           </p>
         </div>

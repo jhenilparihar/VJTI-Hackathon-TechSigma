@@ -39,6 +39,7 @@
     "idna-uts46-hx": "^4.1.2",
     "ipfs-http-client": "^60.0.0",
     "jsesc": "^3.0.2",
+    "moment": "^2.29.4",
     "next": "13.1.6",
     "number-to-bn": "^1.7.0",
     "peer": "^0.6.1",

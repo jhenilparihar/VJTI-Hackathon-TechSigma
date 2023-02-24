@@ -28,22 +28,22 @@ const Nftdet = (props) => {
   };
 
   return (
-    <div className="flex px-4 py-2 items-center">
-      <img src={props.img} className="w-[38%] h-[40%]"></img>
+    <div className="flex px-4 py-2">
+      <img src={props?.tokenImage} className="w-[38%] h-[40%]"></img>
       <div className="w-[62%] flex flex-col px-5 py-2 ">
         <h1 className="  text-2xl font-medium font-Heading w-full">
-          {props.title}
+          {props?.tokenName}
         </h1>
         <p className=" text-sm  text-tertiarygrey-450 py-2 border-b-2 border-tertiarygrey-150">
-          {props.des}
+          {props?.metaData?.description}
         </p>
         {!bid && (
           <div>
             <div className="flex space-x-4 my-5">
               <Owner
-                img={props.owner[0].img}
+                img=""
                 deg="Owner"
-                name={props.owner[0].name}
+                name={""}
               ></Owner>
               <Owner
                 img={"https://niftykit.com/wp-content/uploads/2021/08/bayc.jpg"}

@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import Web3 from "web3";
 import Marketplace from "../abis/Marketplace.json";
 import axios from "axios";
+import { useRouter } from "next/router";
 import { create } from "ipfs-http-client";
 import { Buffer } from "buffer";
 
@@ -45,8 +46,9 @@ export const BlockChainContextProvider = (props) => {
   const [lastMintTime, setLastMintTime] = useState(null);
   const [currentProfile, setCurrentProfile] = useState("");
   const [allUserProfile, setAllUserProfile] = useState({});
+
   console.log(NFTs);
-  // console.log("dsd", NFTContract)
+
   const loadWeb3 = async () => {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
@@ -61,6 +63,7 @@ export const BlockChainContextProvider = (props) => {
 
   const loadBlockchainData = async () => {
     // if(!metamaskConnected) {
+    // await connectToMetamask();
     await connectToMetamask();
     // }
     const web3 = window.web3;
@@ -89,14 +92,16 @@ export const BlockChainContextProvider = (props) => {
         );
         setNFTContract(NFTContract1);
         setContractDetected(true);
-        localStorage.setItem("NFTContract", NFTContract);
+        localStorage.setItem("NFTContract", NFTContract1);
         localStorage.setItem("contractDetected", contractDetected);
 
-        const NFTCount = await NFTContract?.methods?.NFTCounter().call();
+        const NFTCount = await NFTContract1.methods.NFTCounter().call();
         setNFTCount(NFTCount);
         localStorage.setItem("NFTCount", NFTCount);
         for (var i = 1; i <= NFTCount; i++) {
-          const nft = await NFTContract?.methods?.allNFTs(i).call();
+          const nft = await NFTContract1?.methods?.allNFTs(i).call();
+          const nft = await NFTContract1?.methods?.allNFTs(i).call();
+          console.log("hhg", nft);
           setNFTs((prevState) => {
             let flag = false;
             for (let i of prevState) {
@@ -121,19 +126,26 @@ export const BlockChainContextProvider = (props) => {
         setCurrentProfile(cp);
         localStorage.setItem("currentProfile", cp);
 
-        const ProfileCounter = await NFTContract?.methods?.UserCounter().call();
+        const ProfileCounter = await NFTContract1.methods.UserCounter().call();
 
         for (
           var profile_counter = 1;
           profile_counter <= ProfileCounter;
           profile_counter++
         ) {
-          const address = await NFTContract.methods
+          const address = await NFTContract1.methods
             .allAddress(profile_counter)
             .call();
-          const profile = await NFTContract.methods.allProfiles(address).call();
+          const profile = await NFTContract1.methods
+            .allProfiles(address)
+            .call();
 
-          setAllUserProfile({ ...allUserProfile, address: profile });
+          setAllUserProfile((p) => {
+            let newState;
+            newState = { ...p };
+            newState[address] = profile;
+            return newState;
+          });
         }
         totalTokensMinted = parseInt(totalTokensMinted);
         setTotalMinted(totalTokensMinted);
@@ -192,8 +204,10 @@ export const BlockChainContextProvider = (props) => {
         .addUserProfile(
           "https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
           "https://blogs.airdropalert.com/wp-content/uploads/2021/12/Lazy-Lion-NFT-1005x1024.png",
+          "https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+          "https://blogs.airdropalert.com/wp-content/uploads/2021/12/Lazy-Lion-NFT-1005x1024.png",
           "@newUser",
-          "No description",
+          "New on the platform",
           accountAddress,
           "abc@gmail.com",
           overAllDate
@@ -202,32 +216,34 @@ export const BlockChainContextProvider = (props) => {
         .on("confirmation", () => {
           localStorage.setItem(accountAddress, new Date().getTime());
           setLoading(false);
+          const router = useRouter();
+          localStorage.setItem(this.state.accountAddress, new Date().getTime());
+          this.setState({ loading: false });
           // window.location.reload();
+          router.reload();
         });
     }
-
-    console.log(accountAddress);
   };
-  useEffect(() => {
-    console.log(allUserProfile, "all");
-  }, [allUserProfile]);
 
   const setMetaData = async () => {
     console.log(NFTs)
     if (NFTs.length !== 0) {
       NFTs.map(async (nft) => {
+        const result = await fetch(nft?.tokenURI);
         console.log(nft.tokenURI);
         const result = await fetch(nft?.tokenURI);
         const metaData = await result.json();
         setNFTs((prevState) => {
-          return prevState.map((nft) => {
-            return parseInt(nft.tokenId) === Number(metaData.tokenId)
+          const newState = prevState.map((nft) => {
+            return parseInt(nft?.tokenId) === Number(metaData.tokenId)
               ? {
                   ...nft,
                   metaData,
                 }
               : nft;
           });
+          console.log(newState)
+          return newState;
         });
       });
     }
@@ -267,7 +283,6 @@ export const BlockChainContextProvider = (props) => {
   //end//
 
   const mintMyNFT = async (fileUrl, name, tokenPrice, description) => {
-    console.log("mint", fileUrl, name, tokenPrice, description);
     var months = [
       "January",
       "February",
@@ -306,9 +321,6 @@ export const BlockChainContextProvider = (props) => {
     const imageIsUsed = await NFTContract?.methods
       ?.tokenImageExists(fileUrl)
       .call();
-
-    console.log("image", imageIsUsed);
-    console.log("name", nameIsUsed);
 
     if (!nameIsUsed && !imageIsUsed) {
       let previousTokenId;
@@ -425,28 +437,23 @@ export const BlockChainContextProvider = (props) => {
     getData();
   }, []);
 
-  useEffect(() => {
-    const getData = async () => {
-      await setMetaData();
-    };
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     await setMetaData();
+  //   };
 
     getData();
   }, [NFTs?.length]);
+
   const setProfile = async () => {
-    console.log(NFTContract, accountAddress);
     if (accountAddress && NFTContract) {
       {
-        console.log("gasdgjak");
         await uploadProfile();
       }
     }
   };
   useEffect(() => {
     setProfile();
-  }, [NFTContract]);
-
-  useEffect(() => {
-    console.log("sfhs", NFTContract);
   }, [NFTContract]);
 
   return (
