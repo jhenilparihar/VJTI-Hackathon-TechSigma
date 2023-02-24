@@ -1,7 +1,11 @@
+import GenericModal from "@/components/common/GenericModal";
 import { useState } from "react";
 import Owner from "./Owner";
 import OwnerList from "./OwnerList";
 import PriceChart from "./PriceChart";
+import TimePickers from "@/components/common/Timepicker";
+import BidForm from "../Bidding/BidForm";
+import Link from "next/link";
 
 const Nftdet = (props) => {
   const [currentTab, setTab] = useState({
@@ -9,6 +13,8 @@ const Nftdet = (props) => {
     price: false,
     bid: false,
   });
+  const [bid,setBidding]=useState(false)
+  
 
   const data = {
     labels: ["Jan", "Feb", "March", "April", "May", "June", "July"],
@@ -23,7 +29,7 @@ const Nftdet = (props) => {
   };
 
   return (
-    <div className="flex px-4 py-2">
+    <div className="flex px-4 py-2 items-center">
       <img src={props.img} className="w-[38%] h-[40%]"></img>
       <div className="w-[62%] flex flex-col px-5 py-2 ">
         <h1 className="  text-2xl font-medium font-Heading w-full">
@@ -32,7 +38,7 @@ const Nftdet = (props) => {
         <p className=" text-sm  text-tertiarygrey-450 py-2 border-b-2 border-tertiarygrey-150">
           {props.des}
         </p>
-        <div>
+        {!bid && <div>
           <div className="flex space-x-4 my-5">
             <Owner
               img={props.owner[0].img}
@@ -45,15 +51,20 @@ const Nftdet = (props) => {
               name="@par222"
             ></Owner>
           </div>
-          <div>
-            <p className="text-tertiarygrey-50 text-sm font-medium">Price</p>
-            <p className="font-medium text-lg my-2">
-              {props.price}{" "}
+          {<div>
+            <p className="text-tertiarygrey-50 text-sm font-medium ">Price</p>
+            <p className="font-medium text-lg my-2 flex items-center">
+              <span>{props.price}{" "}</span>
               <span className="text-tertiarygrey-50 font-display text-xs mx-1">
                 (7.05 USD)
               </span>
+              <div className="ml-[50%]">
+               <Link href={`/nft/details/${props.id}`}  className="text-tertiarywhite-100 text-xs hover:text-tertiaryred-50 transition-all">See More...</Link>
+            </div>
             </p>
+           
           </div>
+          }
           <div>
             <nav className="text-sm flex space-x-10 w-[100%] py-0  my-2 border-b-[2px] border-tertiarygrey-150 cursor-pointer">
               <span
@@ -111,13 +122,15 @@ const Nftdet = (props) => {
                 
               </div>
               <div className="flex justify-center mt-5 font-bold ">
-              <button className="text-sm rounded-md  bg-gradient-to-l justify-center from-rose-400 via-fuchsia-500 to-indigo-500 px-2 py-3 w-[40%] flex items-center"><p className="text-center mx-2">Schecule bidding </p><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#fff" width={20} height={20}><path d="M318.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-120 120c-12.5 12.5-12.5 32.8 0 45.3l16 16c12.5 12.5 32.8 12.5 45.3 0l4-4L325.4 293.4l-4 4c-12.5 12.5-12.5 32.8 0 45.3l16 16c12.5 12.5 32.8 12.5 45.3 0l120-120c12.5-12.5 12.5-32.8 0-45.3l-16-16c-12.5-12.5-32.8-12.5-45.3 0l-4 4L330.6 74.6l4-4c12.5-12.5 12.5-32.8 0-45.3l-16-16zm-152 288c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l48 48c12.5 12.5 32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-1.4-1.4L272 285.3 226.7 240 168 298.7l-1.4-1.4z"/></svg></button>
+              <button className="text-sm rounded-md  bg-gradient-to-l justify-center from-rose-400 via-fuchsia-500 to-indigo-500 px-2 py-3 w-[40%] flex items-center" onClick={()=>setBidding(true)}><p className="text-center mx-2">Schecule bidding </p><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#fff" width={20} height={20}><path d="M318.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-120 120c-12.5 12.5-12.5 32.8 0 45.3l16 16c12.5 12.5 32.8 12.5 45.3 0l4-4L325.4 293.4l-4 4c-12.5 12.5-12.5 32.8 0 45.3l16 16c12.5 12.5 32.8 12.5 45.3 0l120-120c12.5-12.5 12.5-32.8 0-45.3l-16-16c-12.5-12.5-32.8-12.5-45.3 0l-4 4L330.6 74.6l4-4c12.5-12.5 12.5-32.8 0-45.3l-16-16zm-152 288c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l48 48c12.5 12.5 32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-1.4-1.4L272 285.3 226.7 240 168 298.7l-1.4-1.4z"/></svg></button>
               </div>
             
                </>
             )}
           </div>
-        </div>
+         
+        </div>}
+        {bid && <BidForm price={parseFloat(props.price.split(' ')[0])} close={()=>setBidding(false)}></BidForm>}
       </div>
     </div>
   );

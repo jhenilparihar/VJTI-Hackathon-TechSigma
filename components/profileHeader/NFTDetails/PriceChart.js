@@ -26,12 +26,13 @@ const PriceChart=(props)=>{
           legend: {
             position: 'top',
           },
+          maintainAspectRatio:true
           
         },
       };
     console.log(props.data)
     return(
-        <div className='h-[190px] overflow-y-auto'>
+        <div className={props.size?'':'h-[190px] overflow-y-auto'}>
             <Line data={props.data} options={options} ></Line>
 
         </div>

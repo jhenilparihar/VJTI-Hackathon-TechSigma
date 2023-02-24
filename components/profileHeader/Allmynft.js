@@ -65,7 +65,7 @@ const Allmynft=()=>{
     ]
     return(
         <>
-        {showModal && <GenericModal className="w-[60%] h-[65%]" closeModal={closeModal} posText="Sell" negText="Cancel" posHandler={closeModal} negHandler={closeModal}>
+        {showModal && <GenericModal className="w-[60%] h-[67%]" closeModal={closeModal} posText="Sell" negText="Cancel" posHandler={closeModal} negHandler={closeModal}>
             <Nftdet {...Nft}></Nftdet>
             </GenericModal>}
          <div className={showModal?"mt-10 mx-[5%] flex flex-wrap  justify-between h-[0px] overflow-hidden":"mt-10 mx-[5%] flex flex-wrap  justify-between"}>
