@@ -28,6 +28,7 @@
     "cross-fetch": "^3.1.5",
     "defer-to-connect": "^2.0.1",
     "deps": "^1.0.0",
+    "chart.js": "^4.2.1",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
     "fs-minipass": "^3.0.1",
@@ -37,6 +38,7 @@
     "number-to-bn": "^1.7.0",
     "peer": "^0.6.1",
     "react": "18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-lottie": "^1.2.3",
@@ -47,7 +49,8 @@
     "to-fast-properties": "^4.0.0",
     "truffle": "^5.4.29",
     "truffle-flattener": "^1.5.0",
-    "web3": "^1.8.2"
+    "web3": "^1.8.2",
+    "utils": "^0.3.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
