@@ -1,27 +1,41 @@
-import CurrentBanner from "./CurrentBanner";
-import { useState } from "react";
-import Carousel from "../common/Carousel";
-import TrendingNow from "./TrendingNow";
-
-const recommendations = [
-  "https://www.indiewire.com/wp-content/uploads/2017/09/imperial-dreams-2014.jpg?w=426",
-  "https://www.indiewire.com/wp-content/uploads/2017/09/crouching-tiger-hidden-dragon-sword-of-destiny-2016.jpg?w=675",
-  "https://flxt.tmsimg.com/assets/p9691630_b_v8_ag.jpg",
-  "https://cdn.cinematerial.com/p/297x/jwqwceyo/american-factory-movie-poster-md.jpg?v=1565930430",
-  "https://static.theprint.in/wp-content/uploads/2022/05/posterrrstranger2022052703092620220527033302.jpg",
-  "https://m.media-amazon.com/images/M/MV5BOWY4MmFiY2QtMzE1YS00NTg1LWIwOTQtYTI4ZGUzNWIxNTVmXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_.jpg",
-  "https://hips.hearstapps.com/esq.h-cdn.co/assets/17/06/1486417029-girlfriends-day-keyart.jpg?resize=980:*",
-];
+import MainScreen from "./MainScreen";
+import Section from "./Section";
+import ai from "../../public/animations/ai";
+import audit from "../../public/animations/audit";
+import transperant2 from "../../public/animations/transperant2";
+import Section2 from "./Section2";
+import Section3 from "./Section3";
 
 function Home(props) {
   return (
-    <div>
-      <CurrentBanner />
-      <div className="px-16">
-        <Carousel items={recommendations} className="" />
-      </div>
-      <TrendingNow items={recommendations} />
-    </div>
+    <>
+      <MainScreen />
+      <div className="h-[10px] w-full bg-tertiarygrey-670"></div>
+      <Section
+        animationData={ai}
+        heading="NFT Generator AI"
+        description="This AI will automatically create a digital art for which an NFT can be created."
+        imagePosition="right"
+      />
+      <div className="h-[10px] w-full bg-tertiarygrey-670"></div>
+      <Section
+        animationData={audit}
+        heading="Trustworthy Audits"
+        description="This AI will automatically create a digital art for which an NFT can be created."
+        imagePosition="left"
+      />
+      <div className="h-[10px] w-full bg-tertiarygrey-670"></div>
+      <Section
+        animationData={transperant2}
+        heading="Complete Transperancy"
+        description="This AI will automatically create a digital art for which an NFT can be created."
+        imagePosition="right"
+      />
+      <div className="h-[10px] w-full bg-tertiarygrey-670"></div>
+      <Section2 />
+      <div className="h-[10px] w-full bg-tertiarygrey-670"></div>
+      <Section3 />
+    </>
   );
 }
 

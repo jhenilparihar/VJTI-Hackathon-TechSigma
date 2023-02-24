@@ -1,7 +1,9 @@
 import Input from "../common/Input";
 import useInput from "@/hooks/use-input";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import "react-quill/dist/quill.snow.css";
+import ImageUpload from "../common/ImageUpload";
+import BlockChainContext from "@/store/blockchain-context";
 
 const toolbarContainer = [
   ["bold", "italic", "underline"], // toggled buttons
@@ -10,10 +12,13 @@ const toolbarContainer = [
   [{ list: "ordered" }, { list: "bullet" }],
 ];
 
-const ReactQuill =
-  typeof window === "object" ? require("react-quill") : () => false;
+const ReactQuill = dynamic(import("react-quill"), { ssr: false });
 
 function CreateNFT(props) {
+  const [imageInput, setImageInput] = useState("");
+
+  const blockChainCtx = useContext(BlockChainContext);
+
   const nameInput = useInput("", (name) => {
     return name?.length > 0;
   });
@@ -34,7 +39,22 @@ function CreateNFT(props) {
     props?.description?.length || 0
   );
 
+  const [isDescriptionInputSelected, setIsDescriptionInputSelected] =
+    useState(false);
+
   const [putForSaleInput, setPutForSaleInput] = useState(false);
+
+  const [fileURL, setFileURL] = useState("");
+
+  const [formHasError, setFormHasError] = useState(true);
+
+  const imageInputChangeHandler = (newImage) => {
+    setImageInput(newImage);
+  };
+
+  const resetImageInputHandler = () => {
+    setImageInput("");
+  };
 
   const putForSaleInputChangeHandler = (event) => {
     if (event.target.value === "Yes") {
@@ -44,18 +64,66 @@ function CreateNFT(props) {
     }
   };
 
-  const formSubmitHandler = async (event) => {
-    event.preventDefault();
+  const uploadToIPFSHandler = async () => {
+    const fileUploadResponse = await blockChainCtx?.uploadFileToIPFS(
+      imageInput
+    );
+    const IPFS = fileUploadResponse?.value?.cid;
+    const fileLink = `https://alchemy.mypinata.cloud/ipfs/${IPFS}/`;
+    setFileURL(fileLink);
+    console.log("hey", fileLink);
   };
 
+  const formSubmitHandler = async (event) => {
+    event.preventDefault();
+
+    blockChainCtx?.mintMyNFT(
+      fileURL,
+      nameInput?.enteredValue,
+      priceInput?.enteredValue,
+      descriptionInput
+    );
+    nameInput?.resetInputHandler();
+    setImageInput("");
+    priceInput?.resetInputHandler();
+    setFileURL("");
+    setDescriptionInput("");
+    setDescriptionLength(0);
+    // else {
+
+    // }
+  };
+
+  useEffect(() => {
+    const formIsValid =
+      fileURL &&
+      !nameInput?.inputHasError &&
+      descriptionInput &&
+      !priceInput?.inputHasError;
+    setFormHasError(!formIsValid);
+  }, [fileURL, nameInput, priceInput, descriptionInput]);
+
   return (
-    <div className="px-16 pt-20">
-      <h2 className="py-4 border-b-2 border-tertiarygrey-400">
+    <div className="px-16 pt-20 pb-10">
+      <h2 className="py-4 border-b-2 border-tertiarygrey-400 font-semibold text-lg font-title">
         Create your NFT
       </h2>
-      <form onSubmit={formSubmitHandler}>
-        <div className="flex space-x-10">
-          <div className="w-[50%]">
+      <form onSubmit={formSubmitHandler} className="space-y-2">
+        <div className="flex space-x-10 pt-8">
+          <div className="w-[35%]">
+            <ImageUpload
+              onUpload={imageInputChangeHandler}
+              enableReset={true}
+              defaultImage={""}
+              image={imageInput}
+              onReset={resetImageInputHandler}
+              className="h-[550px] w-full flex-shrink-0 space-y-8"
+              imageDimensions="max-h-[450px] max-w-full"
+              uploadBoxDimensions="h-[450px] w-full flex-shrink-0 space-y-10"
+              onUploadToIPFS={uploadToIPFSHandler}
+            />
+          </div>
+          <div className="flex-grow flex-shrink-0 space-y-6">
             <Input
               input={{
                 id: "name_input",
@@ -67,8 +135,6 @@ function CreateNFT(props) {
               }}
               label="Item Name"
             />
-          </div>
-          <div className="w-[50%]">
             <Input
               input={{
                 id: "price_input",
@@ -82,26 +148,51 @@ function CreateNFT(props) {
               }}
               label="Item Price"
             />
+            <div className="space-y-2 pt-1">
+              <label
+                htmlFor="description_input"
+                className={`text-sm font-normal text-tertiarygrey-400 font-title ${
+                  isDescriptionInputSelected && "text-tertiaryred-50"
+                }`}
+              >
+                Item Description*
+              </label>
+              <ReactQuill
+                id="description_input"
+                className="h-64 mb-12 focus:border-tertiaryred-50"
+                // placeholder="Mention the roles & responsibilities here..."
+                theme="snow"
+                maxLength="1500"
+                onChange={(content, delta, source, editor) => {
+                  setDescriptionInput(content);
+                  setDescriptionLength(editor.getLength() - 1);
+                  return setDescriptionDelta(editor.getContents());
+                }}
+                onFocus={() => {
+                  setIsDescriptionInputSelected(true);
+                }}
+                onBlur={() => {
+                  setIsDescriptionInputSelected(false);
+                }}
+                value={descriptionInput}
+                modules={{
+                  toolbar: {
+                    container: toolbarContainer,
+                  },
+                }}
+              />
+            </div>
           </div>
         </div>
-        <ReactQuill
-          id="description_input"
-          className="h-64 mb-12"
-          // placeholder="Mention the roles & responsibilities here..."
-          theme="snow"
-          maxLength="1500"
-          onChange={(content, delta, source, editor) => {
-            setDescriptionInput(content);
-            setDescriptionLength(editor.getLength() - 1);
-            return setDescriptionDelta(editor.getContents());
-          }}
-          value={descriptionInput}
-          modules={{
-            toolbar: {
-              container: toolbarContainer,
-            },
-          }}
-        />
+        <div className="flex justify-end">
+          <button
+            disabled={formHasError}
+            className="px-4 py-2 border-2 rounded-md border-tertiaryred-50 text-tertiaryred-50 text-base font-display font-semibold"
+            type="submit"
+          >
+            Create
+          </button>
+        </div>
       </form>
     </div>
   );

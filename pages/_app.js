@@ -1,10 +1,19 @@
 import "@/styles/globals.css";
 import Layout from "@/components/Layout";
 
-export default function App({ Component, pageProps }) {
-  return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
-  );
+import React from "react";
+import { BlockChainContextProvider } from "@/store/blockchain-context";
+
+class App extends React.Component {
+  render() {
+    return (
+      <BlockChainContextProvider>
+        <Layout>
+          <this.props.Component {...this.props.pageProps} />
+        </Layout>
+     </BlockChainContextProvider>
+    );
+  }
 }
+
+export default App;
