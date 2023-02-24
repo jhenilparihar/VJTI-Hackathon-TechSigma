@@ -1,4 +1,7 @@
+import { useRouter } from "next/router";
+
 const Filter = () => {
+    const router=useRouter()
   return (
     <div className="mx-[5%] flex items-center justify-between">
       <button className="flex items-baseline border-[2px] border-tertiarygrey-150 py-[6px] px-5 rounded-full">
@@ -14,11 +17,11 @@ const Filter = () => {
         <p className="mx-3 ">Filter</p>
       </button>
       <div className=" flex justify-between w-[30%] font-medium font-display">
-        <button className=" border-2 border-red-600 rounded-full px-7 py-1">
+        <button className=" border-2 border-red-600 rounded-full px-7 py-1" onClick={()=>router.push('/activity/1')}>
             Activity
         </button>
         <button className="bg-gradient-to-r from-red-200 to-red-600 font-semibold px-6 py-1 rounded-full">
-            Buy NFT's
+            Create NFT's
         </button>
         <button className="flex items-center px-4 py-1 border-2 rounded-full border-tertiarygrey-150">
             <p className="mx-3 text-tertiarygrey-150">Sort By</p><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width={10} height={10} fill="#fff"><path d="M169.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 274.7 54.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"/></svg>

@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import Web3 from "web3";
 import Marketplace from "../abis/Marketplace.json";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 const blockChainObj = {
   accountAddress: "",
@@ -45,6 +46,7 @@ export const BlockChainContextProvider = (props) => {
   const [allUserProfile, setAllUserProfile] = useState({});
 
   const loadWeb3 = async () => {
+   
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
     } else if (window.web3) {
@@ -55,10 +57,11 @@ export const BlockChainContextProvider = (props) => {
       );
     }
   };
+  
 
   const loadBlockchainData = async () => {
     // if(!metamaskConnected) {
-    //   await connectToMetamask();
+      // await connectToMetamask();
     // }
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
@@ -86,10 +89,10 @@ export const BlockChainContextProvider = (props) => {
         );
         setNFTContract(NFTContract1);
         setContractDetected(true);
-        localStorage.setItem("NFTContract", NFTContract);
+        localStorage.setItem("NFTContract", NFTContract1);
         localStorage.setItem("contractDetected", contractDetected);
 
-        const NFTCount = await NFTContract?.methods?.NFTCounter().call();
+        const NFTCount = await NFTContract1.methods.NFTCounter().call();
         setNFTCount(NFTCount);
         localStorage.setItem("NFTCount", NFTCount);
         for (var i = 1; i <= NFTCount; i++) {
@@ -118,19 +121,25 @@ export const BlockChainContextProvider = (props) => {
         setCurrentProfile(cp);
         localStorage.setItem("currentProfile", cp);
 
-        const ProfileCounter = await NFTContract?.methods?.UserCounter().call();
+        const ProfileCounter = await NFTContract1.methods.UserCounter().call();
 
         for (
           var profile_counter = 1;
           profile_counter <= ProfileCounter;
           profile_counter++
         ) {
-          const address = await NFTContract.methods
+          const address = await NFTContract1.methods
             .allAddress(profile_counter)
             .call();
-          const profile = await NFTContract.methods.allProfiles(address).call();
+          const profile = await NFTContract1.methods.allProfiles(address).call();
+          console.log((profile),'add')
 
-          setAllUserProfile({ ...allUserProfile, address: profile });
+          setAllUserProfile((p)=>{
+            let newState
+            newState={...p}
+            newState[address]=profile
+            return newState
+          });
         }
         totalTokensMinted = parseInt(totalTokensMinted);
         setTotalMinted(totalTokensMinted);
@@ -181,25 +190,28 @@ export const BlockChainContextProvider = (props) => {
 
       // returns the day of the month (from 1 to 31)
       var day = currentTime.getDate();
-
+      
       // returns the year (four digits)
       var year = currentTime.getFullYear();
       const overAllDate = month + " " + day + " " + year;
       NFTContract.methods
         .addUserProfile(
-          "https://ipfs.infura.io/ipfs/QmeAcsFZfRd719RHMivPUitJpXzH54k8d3CXpmvmLZnF7A",
-          "https://bafybeih5pgcobf6hpgf2pexmkhfsk55zr4dywrazgybk7u2fp6w4webkxu.ipfs.infura-ipfs.io/",
+          "https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+          "https://blogs.airdropalert.com/wp-content/uploads/2021/12/Lazy-Lion-NFT-1005x1024.png",
           "@newUser",
-          "No description",
+          "New on the platform",
           accountAddress,
           "abc@gmail.com",
           overAllDate
         )
         .send({ from: accountAddress })
         .on("confirmation", () => {
+          const router=useRouter()
           localStorage.setItem(this.state.accountAddress, new Date().getTime());
           this.setState({ loading: false });
           // window.location.reload();
+          router.reload()
+
         });
     }
 

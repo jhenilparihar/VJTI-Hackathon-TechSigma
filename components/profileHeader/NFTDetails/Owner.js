@@ -1,7 +1,7 @@
 const Owner=(props)=>{
     return(
         <>
-        <div className="px-2 py-1 rounded-sm border border-tertiarygrey-150 flex items-center w-[45%]">
+        <div className="px-2 py-1 rounded-sm border border-tertiarygrey-150 my-2 mx-2 flex items-center w-[45%]">
             <div>
                 <img src={props.img} className="h-10 w-10 rounded-full"></img>
             </div>
