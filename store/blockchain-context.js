@@ -97,7 +97,7 @@ export const BlockChainContextProvider = (props) => {
         setNFTCount(NFTCount);
         localStorage.setItem("NFTCount", NFTCount);
         for (var i = 1; i <= NFTCount; i++) {
-          const nft = await NFTContract?.methods?.allNFTs(i).call();
+          const nft = await NFTContract1?.methods?.allNFTs(i).call();
           setNFTs((prevState) => {
             let flag = false;
             for (let i of prevState) {
@@ -133,7 +133,7 @@ export const BlockChainContextProvider = (props) => {
             .allAddress(profile_counter)
             .call();
           const profile = await NFTContract1.methods.allProfiles(address).call();
-          console.log((profile),'add')
+          
 
           setAllUserProfile((p)=>{
             let newState
@@ -435,13 +435,13 @@ export const BlockChainContextProvider = (props) => {
     getData();
   }, []);
 
-  useEffect(() => {
-    const getData = async () => {
-      await setMetaData();
-    };
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     await setMetaData();
+  //   };
 
-    getData();
-  }, [NFTs?.length]);
+  //   getData();
+  // }, [NFTs?.length]);
   const setProfile = async () => {
     console.log(NFTContract, accountAddress);
     if (accountAddress && NFTContract) {

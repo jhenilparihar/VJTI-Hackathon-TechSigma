@@ -1,16 +1,18 @@
+import BlockChainContext from "@/store/blockchain-context";
+import { useContext } from "react";
 const Details = () => {
+    const ctx=useContext(BlockChainContext)
+    console.log(ctx.NFTs)
+    console.log(ctx.allUserProfile[ctx.accountAddress])
   return (
     <div className="my-20 mx-[5%] flex items-center border-b-[1px] pb-5 border-tertiarygrey-450 ">
       <div className="w-[80%]">
         <div className=" flex items-baseline space-x-3">
           <span className="text-2xl   my-2 text-white font-bold">By</span>
-          <p className="grad">@paras2002</p>
+          <p className="grad"> {ctx.allUserProfile[ctx.accountAddress]?.name}</p>
         </div>
         <p className="w-[60%] my-1">
-          In publishing and graphic design, Lorem ipsum is a placeholder text
-          commonly used to demonstrate the visual form of a document or a
-          typeface without relying on meaningful content. Lorem ipsum may be
-          used as a placeholder before final copy is available.
+         {ctx.allUserProfile[ctx.accountAddress]?.description}
         </p>
       </div>
       <div className="w-[20%]">
