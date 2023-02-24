@@ -69,6 +69,17 @@ function Navbar(props) {
         >
           Recently Added
         </div>
+        <div
+          onClick={() => {
+            tabClickHandler("feed");
+          }}
+          className={`cursor-pointer py-6 px-2 ${
+            currentTab === "feed" &&
+            " text-tertiaryred-50"
+          }`}
+        >
+          Feed
+        </div>
       </div>
     </div>
   );

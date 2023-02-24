@@ -24,20 +24,20 @@ const Nftdet = (props) => {
 
   return (
     <div className="flex px-4 py-2">
-      <img src={props.img} className="w-[38%] h-[40%]"></img>
+      <img src={props?.tokenImage} className="w-[38%] h-[40%]"></img>
       <div className="w-[62%] flex flex-col px-5 py-2 ">
         <h1 className="  text-2xl font-medium font-Heading w-full">
-          {props.title}
+          {props?.tokenName}
         </h1>
         <p className=" text-sm  text-tertiarygrey-450 py-2 border-b-2 border-tertiarygrey-150">
-          {props.des}
+          {props?.metaData?.description}
         </p>
         <div>
           <div className="flex space-x-4 my-5">
             <Owner
-              img={props.owner[0].img}
+              img={""}
               deg="Owner"
-              name={props.owner[0].name}
+              name={""}
             ></Owner>
             <Owner
               img={"https://niftykit.com/wp-content/uploads/2021/08/bayc.jpg"}
@@ -48,7 +48,7 @@ const Nftdet = (props) => {
           <div>
             <p className="text-tertiarygrey-50 text-sm font-medium">Price</p>
             <p className="font-medium text-lg my-2">
-              {props.price}{" "}
+              {props?.price}{" "}
               <span className="text-tertiarygrey-50 font-display text-xs mx-1">
                 (7.05 USD)
               </span>
@@ -80,20 +80,9 @@ const Nftdet = (props) => {
               >
                 Price History
               </span>
-              <span
-                className={
-                  currentTab.bid
-                    ? "border-b-4 py-2 border-tertiaryred-50"
-                    : "py-2"
-                }
-                onClick={() => {
-                  setTab({ price: false, bid: true, owner: false });
-                }}
-              >
-                Bidding Status
-              </span>
+              {props?.currentOwner === props?.currentAccount}
             </nav>
-            {currentTab.owner && <OwnerList owners={props.owner}></OwnerList>}
+            {/* {currentTab.owner && <OwnerList owners={props.owner}></OwnerList>} */}
             {currentTab.price && <PriceChart data={data}></PriceChart>}
             {currentTab.bid && (
                 <>
