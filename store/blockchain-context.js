@@ -21,9 +21,9 @@ const blockChainObj = {
   lastMintTime: null,
   currentProfile: "",
   allUserProfile: {},
-  buyNFT:()=>{},
-  toggleForSale:()=>{},
-  changeTokenPrice :()=>{}
+  buyNFT: () => {},
+  toggleForSale: () => {},
+  changeTokenPrice: () => {},
 };
 
 const BlockChainContext = React.createContext(blockChainObj);
@@ -64,7 +64,7 @@ export const BlockChainContextProvider = (props) => {
 
   const loadBlockchainData = async () => {
     // if(!metamaskConnected) {
-     await connectToMetamask();
+    await connectToMetamask();
     // }
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
@@ -100,7 +100,7 @@ export const BlockChainContextProvider = (props) => {
         localStorage.setItem("NFTCount", NFTCount);
         for (var i = 1; i <= NFTCount; i++) {
           const nft = await NFTContract1?.methods?.allNFTs(i).call();
-  
+
           setNFTs((prevState) => {
             let flag = false;
             for (let i of prevState) {
@@ -338,7 +338,7 @@ export const BlockChainContextProvider = (props) => {
         .on("confirmation", () => {
           localStorage.setItem(accountAddress, new Date().getTime());
           setLoading(false);
-         // window.location.reload();
+          // window.location.reload();
         });
     } else {
       if (nameIsUsed) {
@@ -374,16 +374,32 @@ export const BlockChainContextProvider = (props) => {
       });
   };
 
+  // const buyNFT = (tokenId, price) => {
+  //   console.log(tokenId, typeof tokenId, price, typeof price, "tt");
+  //   setLoading(true);
+  //   NFTContract?.methods
+  //     ?.buyToken(tokenId)
+  //     .send({ from: accountAddress, value: price })
+  //     .on("confirmation", () => {
+  //       setLoading(false);
+  //       //window.location.reload();
+  //     });
+  // };
+
   const buyNFT = (tokenId, price) => {
-    console.log(tokenId,typeof(tokenId),price,typeof(price),'tt')
+    console.log(tokenId, typeof tokenId, price, typeof price, "tt");
     setLoading(true);
-    NFTContract?.methods
-      ?.buyToken(tokenId)
-      .send({ from: accountAddress, value: price })
-      .on("confirmation", () => {
-        setLoading(false);
-        //window.location.reload();
-      });
+    fetch("./file.json")
+      .then((response) => response.json())
+      .then((jsonObject) => console.log(jsonObject[0]));
+
+    // NFTContract?.methods
+    //   ?.buyToken2("0xdeF7796A0cE84Dd02cAA8bDD2C044d41a68C2dbd", tokenId)
+    //   .send({ from: accountAddress, value: price })
+    //   .on("confirmation", () => {
+    //     setLoading(false);
+    //     //window.location.reload();
+    //   });
   };
 
   // const connectToMetamaskHandler = async () => {
@@ -412,9 +428,9 @@ export const BlockChainContextProvider = (props) => {
     allUserProfile: allUserProfile,
     mintMyNFT: mintMyNFT,
     uploadFileToIPFS: uploadFileToIPFS,
-    buyNFT:buyNFT,
-    toggleForSale:toggleForSale,
-    changeTokenPrice :changeTokenPrice 
+    buyNFT: buyNFT,
+    toggleForSale: toggleForSale,
+    changeTokenPrice: changeTokenPrice,
   };
 
   // useEffect(() => {
