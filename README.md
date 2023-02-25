@@ -14,7 +14,7 @@
    -->
  </div>
   
-  ## DeepSpace : About
+  ## CryptoNaut : About
 - It is a blockchain based project for Trading Nft's. 
 - It works on the idea that: “All the users can buy,sell,mint/create their Nft's or can just view Nft's that are created by other people in the world” The entire process       works on the blockchain in partnership with the IPFS(to provide data security). 
 - Does Everything for Nft's : Creating ,Selling and Buying.
