@@ -1,5 +1,5 @@
 
-<h1 align="center"> KryptoNaut </h1>
+<h1 align="center"> CryptoNaut </h1>
 <h3 align="center"> Blockchain Based NFT marketplace DApp where users mint and Trade ERC721 implemented NFTs<h3>
 
 <div align="center">
@@ -63,6 +63,12 @@
 - Explore page.
     - User's can Explore all the Nft's that have been minted by all users on our site. On the explore page user will get some filter options like recently minted or getting Nft's between specific price range(some filters are yet to be added still working on it).
  
+- NFT Bidding
+    - Owner can put there NFT's for Auction. As soon as the Auction starts NFT will be drived to a live Auction page ,where different users can bid for nfts.
+    - Once the nft is on Auction only the users particioating in Auction will be displayed under a specific aucted nft.
+    - Once the Auction ends the Payable value will be transfered to the owners account and at the end ownershipof that nft will be transfered.
+  
+ 
 
 - Nft Details page.
     - User's can view details about a particular Nft by clicking on it(nft info includes: Nft image, Creator, Current Owner,Previous Owner,Buy Option,if owner[then keep for sale/remove from sale option and change price option],description).
@@ -73,7 +79,7 @@
     - The second method for buying nft's for non-crypto user is Traditional payment method which is implemented using stripe payment method,after Successfully        transfering of money particular nft's ownership will also be transfered to that specific buyer
   
 
-  - Feed Page.
+- Feed Page.
     - User can create posts about there nft's which will then be displayed on feed page.
     - Feed page can be used for publishment of special NFT's and for displaying tranding nft's.
  
@@ -87,6 +93,8 @@
 - [web3.js](https://web3js.readthedocs.io/en/v1.3.4/) - Allows users to interact with a local or remote ethereum node using HTTP, IPC or WebSocket.
 - [Truffle](https://www.trufflesuite.com/truffle) - Development environment, testing framework and asset pipeline for blockchains using the Ethereum Virtual Machine (EVM).
 - [Ganache](https://www.trufflesuite.com/ganache) - Personal blockchain for Ethereum development used to deploy contracts, develop DApps, and run tests.
+- [Stripe](https://dashboard.stripe.com/test/dashboard) - Payment Gateway for Traditional Payment Method.
+- Django -AI/ML.
 #
 ### Interact with the deployed DApp
 - Marketplace DApp requires [Metamask](https://metamask.io/) browser wallet extension to interact with.
