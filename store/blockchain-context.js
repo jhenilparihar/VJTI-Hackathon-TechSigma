@@ -415,7 +415,6 @@ export const BlockChainContextProvider = (props) => {
   const connectToMetamaskHandler = async () => {
     await loadWeb3();
     await loadBlockchainData();
-    localStorage.setItem("reload", true);
   };
 
   const blockChainCtx = {
@@ -458,6 +457,7 @@ export const BlockChainContextProvider = (props) => {
     await loadBlockchainData();
   };
   useEffect(() => {
+    console.log("hey", localStorage.getItem("isReload"))
     localStorage.getItem("isReload") && getData();
   }, []);
 

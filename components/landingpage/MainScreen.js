@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 
 function MainScreen(props) {
-  // const 
+  const router = useRouter();
   return (
     <div className="h-screen w-full relative">
       <img
@@ -18,15 +18,19 @@ function MainScreen(props) {
           <div className="text-[50px] font-bold text-center">
             Explore the NFT world, collect and sell your artwork
           </div>
-          <div className="text-base text-center mt-3 mb-6">Ready to set foot into the NFT marketplace?</div>
+          <div className="text-base text-center mt-3 mb-6">
+            Ready to set foot into the NFT marketplace?
+          </div>
           {/* <div className="flex w-full "> */}
-            <button
-
-              type="button"
-              className="rounded-lg text-base px-6 py-3 bg-tertiaryred-50 font-semibold hover:bg-tertiaryred-500 transition-all duration-200"
-            >
-              Get Started
-            </button>
+          <button
+            onClick={() => {
+              router?.push("/explore");
+            }}
+            type="button"
+            className="rounded-lg text-base px-6 py-3 bg-tertiaryred-50 font-semibold hover:bg-tertiaryred-500 transition-all duration-200"
+          >
+            Get Started
+          </button>
           {/* </div> */}
         </div>
       </div>
