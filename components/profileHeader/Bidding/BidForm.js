@@ -1,23 +1,31 @@
 import TimePickers from "@/components/common/Timepicker";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import BlockChainContext from "@/store/blockchain-context";
 import axios from "axios";
 const BidForm = (props) => {
   const [startTime, setStartTime] = useState(moment().format("hh:mm:ss a"));
   const [endTime, setEndTime] = useState(moment().format("hh:mm:ss a"));
-  const [basePrice,setBasePrice]=useState(props.price)
+  const [basePrice,setBasePrice]=useState(props.baseprice)
    const router=useRouter();
-   const StartBidding=async()=>{
+   const ctx=useContext(BlockChainContext)
+   
+   const StartBidding=async(e)=>{
+    console.log(props)
+    e.preventDefault()
     const data=new FormData()
     data.append("start_date",startTime)
     data.append("end_date",endTime)
     data.append("base_price",props.baseprice)
-    data.append("nftdetails",props.id)
+    data.append("age",props.tokenName)
     data.append("name",props.name)
-    const result = await axios.post(`https://vjtihackathon.pythonanywhere.com/login/bid-start/`).then(()=>{
-      router.push(`/nft/bidding/${props.id}`)
+    ctx.toggleForSale(props.tokenId)
+     await axios.post(`https://vjtihackathon.pythonanywhere.com/login/bid-start/`,data).then(()=>{
+     
+      router.push(`/nft/bidding/${props.tokenName}`)
     })
+   
   }
     
 
@@ -25,7 +33,7 @@ const BidForm = (props) => {
   return (
     <>
       <div className="flex justify-between">
-        <button className="bg-gradient-to-r from-red-500 to-red-800 text-white font-semibold my-2  rounded-md w-[35%] justify-center py-2 text-center flex items-center" onClick={()=>StartBidding}>
+        <button className="bg-gradient-to-r from-red-500 to-red-800 text-white font-semibold my-2  rounded-md w-[35%] justify-center py-2 text-center flex items-center" onClick={StartBidding}>
           LIVE AUCTION
           <span className="mx-2">
             <svg

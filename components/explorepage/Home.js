@@ -6,6 +6,7 @@ import BlockChainContext from "@/store/blockchain-context";
 import GenericModal from "../common/GenericModal";
 import Nftdet from "../profileHeader/NFTDetails/Nftdet";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 const recommendations = [
   "https://www.indiewire.com/wp-content/uploads/2017/09/imperial-dreams-2014.jpg?w=426",
@@ -22,7 +23,8 @@ function Home(props) {
   const [currentTokenURI, setCurrentTokenURI] = useState("");
   const [NFT, setNFT] = useState({});
   const [NFTs, setNFTs] = useState([]);
-
+  const [live, setLive] = useState([]);
+  const router = useRouter();
 
   const fetchNFTs = async () => {
     try {
@@ -31,12 +33,24 @@ function Home(props) {
       );
 
       setNFTs(result?.data);
-    } catch (error) {
-    }
+    } catch (error) {}
+  };
+  const fetchLive = async () => {
+    try {
+      const result = await axios.get(
+        "https://vjtihackathon.pythonanywhere.com/login/live-bid/"
+      );
+
+      setLive(result?.data);
+    } catch (error) {}
   };
 
-  const NFTClickHandler = (tokenURI) => {
+  const NFTClickHandler = (tokenURI, name) => {
     setCurrentTokenURI(tokenURI);
+  };
+
+  const liveHandler = (token, name) => {
+    router.push(`/nft/bidding/${name}`);
   };
 
   const closeModalHandler = () => {
@@ -61,21 +75,47 @@ function Home(props) {
   useEffect(() => {
     if (typeof window != "undefined" && localStorage.getItem("isReload")) {
       setNFTs([...blockChainCtx.NFTs]);
-
     } else {
       fetchNFTs();
     }
   }, [blockChainCtx.NFTs]);
 
+  useEffect(() => {
+    fetchLive();
+  }, []);
+
+  /*const enterBidding=async()=>{
+
+     const formData=
+
+    try {
+      const result = await axios.post(
+        "https://vjtihackathon.pythonanywhere.com/login/bid-details/"
+      );
+
+      setLive(result?.data);
+    } catch (error) {}
+
+
+
+  }*/
+
   return (
     <>
       <div className="pb-10">
         <CurrentBanner />
-        <div className="px-16">
+        <div className="px-14">
           <Carousel items={NFTs} className="" onCardClick={NFTClickHandler} />
         </div>
         <TrendingNow items={recommendations} />
+        <div className="py-3 px-4 text-center font-bold text-lg border-b-2 border-tertiaryred-50   text-tertiarywhite-50  mx-[4%] w-[10%]">
+          Live Now
+        </div>
+        <div className="px-16">
+          <Carousel items={live} onCardClick={liveHandler} />
+        </div>
       </div>
+
       {NFT && Object.keys(NFT)?.length > 0 && (
         <GenericModal
           className="w-[60%] h-[30%%]"

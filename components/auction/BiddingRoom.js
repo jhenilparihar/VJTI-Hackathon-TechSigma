@@ -1,7 +1,9 @@
+import { useEffect } from "react"
 import Auctioneer from "./Auctioneer"
-const BiddingRoom=()=>{
-
-    const bidders=[
+const BiddingRoom=(props)=>{
+    
+   
+   /* const bidders=[
         {
             name:"@yash123",
             profile_img:"https://www.disruptivegate.com/wp-content/uploads/2022/04/Z_9cHk8G_400x400.jpg",
@@ -33,10 +35,10 @@ const BiddingRoom=()=>{
             bid_price:"7.75 WRX"
         },
        
-    ]
+    ]*/
     return(
         <div className="flex flex-wrap justify-evenly">
-            {bidders.map((bid)=><Auctioneer {...bid}></Auctioneer>)}
+            {props.bidders.map((bid)=><Auctioneer {...bid}></Auctioneer>)}
 
         </div>
     )
