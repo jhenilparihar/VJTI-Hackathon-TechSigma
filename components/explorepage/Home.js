@@ -70,7 +70,7 @@ function Home(props) {
           posHandler={NFT.forSale?buyNFTHandler:closeModalHandler}
           negHandler={closeModalHandler}
         >
-          <Nftdet {...NFT} buy={true}></Nftdet>
+          <Nftdet {...NFT} buy={true} ></Nftdet>
          
         </GenericModal>
       )}

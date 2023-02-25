@@ -25,10 +25,10 @@ const Allmynft=(props)=>{
     
     return(
         <>
-        {showModal && <GenericModal className={"w-[60%] h-[71%]"} closeModal={closeModal} posText={Nft?.forSale?"UnSell":"Sell"} negText="Cancel" posHandler={sellNFT} negHandler={closeModal}>
+        {showModal && <GenericModal className={"w-[70%] h-[74%]"} closeModal={closeModal} posText={Nft?.forSale?"UnSell":"Sell"} negText="Cancel" posHandler={sellNFT} negHandler={closeModal}>
             <Nftdet {...Nft}></Nftdet>
             </GenericModal>}
-         <div className={showModal?"mt-10 mx-[4%] flex flex-wrap  space-x-10 w-full h-[0px] overflow-hidden":"mt-10 mx-[5%] flex flex-wrap  "}>
+         <div className={showModal?"mt-10 mx-[4%] flex space-x-10 w-full h-[0px] overflow-hidden":"mt-10 mx-[3%] flex "}>
             {nft.map((nft)=><Mynft {...nft}  openModal={openModal}></Mynft>)}
 
 

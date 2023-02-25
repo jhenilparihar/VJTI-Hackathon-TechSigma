@@ -34,25 +34,34 @@ const Nftdet = (props) => {
         borderColor: "#ff1818",
       },
     ],
-  }
-  const [newPrice,setNewPrice]=useState(props?.price &&
-    window?.web3?.utils?.fromWei(props?.price + ""))
-  const changePriceHandler=(e)=>{
+  };
+  const [newPrice, setNewPrice] = useState(
+    props?.price && window?.web3?.utils?.fromWei(props?.price + "")
+  );
+  const changePriceHandler = (e) => {
     e.preventDefault();
     //console.log(typeof(e.target.value+""),e.target.value)
-    ctx.changeTokenPrice(parseInt(props.tokenId),newPrice)
-
-  }
+    ctx.changeTokenPrice(parseInt(props.tokenId), newPrice);
+  };
   return (
     <div className="flex px-4 py-2 justify-center items-center ">
-      <img src={props?.tokenImage} className="w-[48%] h-[70%]"></img>
-      <div className="w-[62%] flex flex-col px-5 py-2 ">
+      <div>
+        <img src={props?.tokenImage} className="w-[90%] h-[90%]"></img>
+        {props.forSale && props.currentOwner != ctx.accountAddress && (
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#fff" width={20} height={20}>
+            <path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V192c0-35.3-28.7-64-64-64H80c-8.8 0-16-7.2-16-16s7.2-16 16-16H448c17.7 0 32-14.3 32-32s-14.3-32-32-32H64zM416 272a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+          </svg>
+        )}
+      </div>
+
+      <div className="w-[60%] flex flex-col px-1 py-2 ">
         <h1 className="  text-2xl font-medium font-Heading w-full">
           {props?.tokenName}
         </h1>
         <p className=" text-sm  text-tertiarygrey-450 py-2 border-b-2 border-tertiarygrey-150">
           {props?.metaData?.description.replaceAll("<.*?>", "")}
         </p>
+
         {!bid && (
           <div>
             <div className="flex space-x-4 my-5">
@@ -100,12 +109,15 @@ const Nftdet = (props) => {
                 )}
 
                 {price && !props.buy && (
-                  <form className="flex space-x-3 items-center" onSubmit={changePriceHandler}>
+                  <form
+                    className="flex space-x-3 items-center"
+                    onSubmit={changePriceHandler}
+                  >
                     <input
                       className="py-1 border-b-2 border-tertiaryred-50 bg-[#232323] focus:outline-none w-[70%]"
                       type={"number"}
                       value={newPrice}
-                      onChange={(e)=>setNewPrice(e.target.value)}
+                      onChange={(e) => setNewPrice(e.target.value)}
                     ></input>
                     <button
                       type="submit"
@@ -241,7 +253,10 @@ const Nftdet = (props) => {
         )}
         {bid && (
           <BidForm
-            price={parseFloat(props.price.split(" ")[0])}
+            baseprice={parseInt(
+              props?.price && window?.web3?.utils?.fromWei(props?.price + "")
+            )}
+            {...props}
             close={() => setBidding(false)}
           ></BidForm>
         )}
