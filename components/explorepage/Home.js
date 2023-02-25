@@ -23,15 +23,15 @@ function Home(props) {
   const [NFT, setNFT] = useState({});
   const [NFTs, setNFTs] = useState([]);
 
+
   const fetchNFTs = async () => {
     try {
       const result = await axios.get(
         "https://vjtihackathon.pythonanywhere.com/login/createcontent/"
       );
-      console.log(result);
+
       setNFTs(result?.data);
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -52,21 +52,20 @@ function Home(props) {
     if (currentTokenURI) {
       setNFT(
         NFTs.filter((n) => {
-          console.log(n);
           return n.tokenURI == currentTokenURI;
         })[0]
       );
-      console.log(NFT);
     }
   }, [currentTokenURI]);
 
   useEffect(() => {
-    if (blockChainCtx?.metamaskConnected) {
-      setNFTs([...blockChainCtx?.NFTs]);
+    if (typeof window != "undefined" && localStorage.getItem("isReload")) {
+      setNFTs([...blockChainCtx.NFTs]);
+
     } else {
       fetchNFTs();
     }
-  }, [blockChainCtx?.NFTs]);
+  }, [blockChainCtx.NFTs]);
 
   return (
     <>

@@ -30,16 +30,15 @@ function Carousel(props) {
     });
   };
 
-  const recs = props?.items?.map((item, index) => {
+  const recs = props?.items.map((item, index) => {
     let userImage = "";
     if (item?.tokenId) {
       userImage = blockChainCtx?.allUserProfile[item?.currentOwner]?.imageHash;
     }
-
     return (
       <div
         key={index}
-        onClick={()=>props?.onCardClick(item?.tokenId)}
+        onClick={()=>props?.onCardClick(item?.tokenURI)}
         className="rounded-lg h-[400px] w-[270px] flex-shrink-0 transform transition duration-500 hover:scale-110 cursor-pointer"
       >
         <img
