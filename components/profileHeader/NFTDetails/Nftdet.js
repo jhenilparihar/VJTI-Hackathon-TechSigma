@@ -59,7 +59,7 @@ const Nftdet = (props) => {
           {props?.tokenName}
         </h1>
         <p className=" text-sm  text-tertiarygrey-450 py-2 border-b-2 border-tertiarygrey-150">
-          {props?.metaData?.description.replaceAll("<.*?>", "")}
+          {props?.tokenDesc?.replaceAll("\<.*?\>", "")}
         </p>
 
         {!bid && (
