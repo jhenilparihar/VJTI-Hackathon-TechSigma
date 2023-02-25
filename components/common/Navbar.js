@@ -73,7 +73,7 @@ function Navbar(props) {
           </div>
           <div
            onClick={() => {
-            tabClickHandler(`profile/${ctx.accountAddress}}`);
+            tabClickHandler(`profile/${ctx.accountAddress}`);
           }}
           className={`cursor-pointer py-6 px-2 ${
             currentTab === "new" &&

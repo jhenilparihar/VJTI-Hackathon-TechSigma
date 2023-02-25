@@ -21,7 +21,9 @@ const blockChainObj = {
   lastMintTime: null,
   currentProfile: "",
   allUserProfile: {},
-  buyNFT:()=>{}
+  buyNFT:()=>{},
+  toggleForSale:()=>{},
+  changeTokenPrice :()=>{}
 };
 
 const BlockChainContext = React.createContext(blockChainObj);
@@ -410,7 +412,9 @@ export const BlockChainContextProvider = (props) => {
     allUserProfile: allUserProfile,
     mintMyNFT: mintMyNFT,
     uploadFileToIPFS: uploadFileToIPFS,
-    buyNFT:buyNFT
+    buyNFT:buyNFT,
+    toggleForSale:toggleForSale,
+    changeTokenPrice :changeTokenPrice 
   };
 
   // useEffect(() => {

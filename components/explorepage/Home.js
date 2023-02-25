@@ -64,9 +64,10 @@ function Home(props) {
         <GenericModal
           className="w-[60%] h-[30%%]"
           closeModal={closeModalHandler}
-          posText="Buy"
+          posText={NFT.forSale?"Buy":"Ok"}
           negText="Cancel"
-          posHandler={buyNFTHandler}
+          disable={NFT.currentOwner==blockChainCtx.accountAddress}
+          posHandler={NFT.forSale?buyNFTHandler:closeModalHandler}
           negHandler={closeModalHandler}
         >
           <Nftdet {...NFT} buy={true}></Nftdet>
