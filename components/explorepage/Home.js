@@ -19,10 +19,9 @@ const recommendations = [
 
 function Home(props) {
   const blockChainCtx = useContext(BlockChainContext);
-  const [currentTokenId, setCurrentTokenId] = useState("");
+  const [currentTokenURI, setCurrentTokenURI] = useState("");
   const [NFT, setNFT] = useState({});
   const [NFTs, setNFTs] = useState([]);
-
 
   const fetchNFTs = async () => {
     try {
@@ -36,14 +35,13 @@ function Home(props) {
     }
   };
 
-  const NFTClickHandler = (tokenId) => {
-    setCurrentTokenId(tokenId);
+  const NFTClickHandler = (tokenURI) => {
+    setCurrentTokenURI(tokenURI);
   };
 
   const closeModalHandler = () => {
-    setCurrentTokenId("");
-    setNFT()
-    
+    setCurrentTokenURI("");
+    setNFT();
   };
 
   const buyNFTHandler = () => {
@@ -51,12 +49,16 @@ function Home(props) {
     blockChainCtx.buyNFT(parseInt(NFT.tokenId), NFT.price);
   };
   useEffect(() => {
-    if (currentTokenId) {
-      console.log(currentTokenId);
-      setNFT(NFTs.filter((n) => n.tokenId == currentTokenId)[0]);
+    if (currentTokenURI) {
+      setNFT(
+        NFTs.filter((n) => {
+          console.log(n);
+          return n.tokenURI == currentTokenURI;
+        })[0]
+      );
       console.log(NFT);
     }
-  }, [currentTokenId]);
+  }, [currentTokenURI]);
 
   useEffect(() => {
     fetchNFTs();
@@ -81,8 +83,7 @@ function Home(props) {
           posHandler={NFT.forSale ? buyNFTHandler : closeModalHandler}
           negHandler={closeModalHandler}
         >
-          <Nftdet {...NFT} buy={true} ></Nftdet>
-         
+          <Nftdet {...NFT} buy={true}></Nftdet>
         </GenericModal>
       )}
     </>

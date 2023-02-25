@@ -337,7 +337,7 @@ export const BlockChainContextProvider = (props) => {
       const price = window.web3.utils.toWei(tokenPrice.toString(), "ether");
 
       NFTContract?.methods
-        ?.mintNFT(name, tokenURI, price, fileUrl, dateTime)
+        ?.mintNFT(name, tokenURI, price, fileUrl, description)
         .send({ from: accountAddress })
         .on("confirmation", () => {
           localStorage.setItem(accountAddress, new Date().getTime());
@@ -400,32 +400,32 @@ export const BlockChainContextProvider = (props) => {
       });
   };
 
-  // const buyNFT = (tokenId, price) => {
-  //   console.log(tokenId, typeof tokenId, price, typeof price, "tt");
-  //   setLoading(true);
-  //   NFTContract?.methods
-  //     ?.buyToken(tokenId)
-  //     .send({ from: accountAddress, value: price })
-  //     .on("confirmation", () => {
-  //       setLoading(false);
-  //       //window.location.reload();
-  //     });
-  // };
-
   const buyNFT = (tokenId, price) => {
+    console.log(tokenId, typeof tokenId, price, typeof price, "tt");
+    setLoading(true);
+    NFTContract?.methods
+      ?.buyToken(tokenId)
+      .send({ from: accountAddress, value: price })
+      .on("confirmation", () => {
+        setLoading(false);
+        //window.location.reload();
+      });
+  };
+
+  const buyNFT2 = (tokenId, price) => {
     console.log(tokenId, typeof tokenId, price, typeof price, "tt");
     setLoading(true);
     fetch("./file.json")
       .then((response) => response.json())
       .then((jsonObject) => console.log(jsonObject[0]));
 
-    // NFTContract?.methods
-    //   ?.buyToken2("0xdeF7796A0cE84Dd02cAA8bDD2C044d41a68C2dbd", tokenId)
-    //   .send({ from: accountAddress, value: price })
-    //   .on("confirmation", () => {
-    //     setLoading(false);
-    //     //window.location.reload();
-    //   });
+    NFTContract?.methods
+      ?.buyToken2("0xdeF7796A0cE84Dd02cAA8bDD2C044d41a68C2dbd", tokenId)
+      .send({ from: accountAddress, value: price })
+      .on("confirmation", () => {
+        setLoading(false);
+        //window.location.reload();
+      });
   };
 
   const connectToMetamaskHandler = async () => {
@@ -453,8 +453,10 @@ export const BlockChainContextProvider = (props) => {
     mintMyNFT: mintMyNFT,
     uploadFileToIPFS: uploadFileToIPFS,
     buyNFT: buyNFT,
+    buyNFT2: buyNFT2,
     toggleForSale: toggleForSale,
     changeTokenPrice: changeTokenPrice,
+    connectToMetamask: connectToMetamask,
   };
 
   // useEffect(() => {
@@ -472,7 +474,7 @@ export const BlockChainContextProvider = (props) => {
     await loadBlockchainData();
   };
   useEffect(() => {
-    console.log("hey", localStorage.getItem("isReload"))
+    console.log("hey", localStorage.getItem("isReload"));
     localStorage.getItem("isReload") && getData();
   }, []);
 
