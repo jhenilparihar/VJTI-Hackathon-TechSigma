@@ -4,11 +4,16 @@ import SellGraph from "@/components/activity/SellGraph";
 import ActivityList from "@/components/activity/ActivityList";
 import GenericModal from "@/components/common/GenericModal";
 import { useState } from "react";
+import { useRouter } from "next/router";
 const Index = () => {
   const [modal, setModal] = useState(false);
+  const router=useRouter()
+  const accountAddress=router.query.slug
+
   return (
     <>
-      <Header></Header>
+   
+      <Header accountAddress={accountAddress}></Header>
       <div>
         <h1 className="text-center text-xl font-bold font-Heading my-4 flex space-x-2 justify-center items-center">
           <span className="text-tertiaryred-50 text-lg ">@par2222's</span>{" "}

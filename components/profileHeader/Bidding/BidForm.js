@@ -2,15 +2,30 @@ import TimePickers from "@/components/common/Timepicker";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import axios from "axios";
 const BidForm = (props) => {
   const [startTime, setStartTime] = useState(moment().format("hh:mm:ss a"));
   const [endTime, setEndTime] = useState(moment().format("hh:mm:ss a"));
   const [basePrice,setBasePrice]=useState(props.price)
-   const router=useRouter()
+   const router=useRouter();
+   const StartBidding=async()=>{
+    const data=new FormData()
+    data.append("start_date",startTime)
+    data.append("end_date",endTime)
+    data.append("base_price",props.baseprice)
+    data.append("nftdetails",props.id)
+    data.append("name",props.name)
+    const result = await axios.post(`https://vjtihackathon.pythonanywhere.com/login/bid-start/`).then(()=>{
+      router.push(`/nft/bidding/${props.id}`)
+    })
+  }
+    
+
+  
   return (
     <>
       <div className="flex justify-between">
-        <button className="bg-gradient-to-r from-red-500 to-red-800 text-white font-semibold my-2  rounded-md w-[35%] justify-center py-2 text-center flex items-center" onClick={()=>router.push('/nft/bidding')}>
+        <button className="bg-gradient-to-r from-red-500 to-red-800 text-white font-semibold my-2  rounded-md w-[35%] justify-center py-2 text-center flex items-center" onClick={()=>StartBidding}>
           LIVE AUCTION
           <span className="mx-2">
             <svg
@@ -59,7 +74,7 @@ const BidForm = (props) => {
         </label>
         <input
           type="number"
-          defaultValue={props.price}
+          defaultValue={props.baseprice}
           value={basePrice}
           onChange={(e)=>setBasePrice(e.target.value)}
           className="py-2 rounded-sm bg-[#232323]  focus:outline-none border-b-2 border-tertiaryred-50 px-2"

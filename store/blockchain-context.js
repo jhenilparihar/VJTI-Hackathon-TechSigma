@@ -48,8 +48,6 @@ export const BlockChainContextProvider = (props) => {
   const [currentProfile, setCurrentProfile] = useState("");
   const [allUserProfile, setAllUserProfile] = useState({});
 
-  console.log(NFTs);
-
   const loadWeb3 = async () => {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
@@ -272,7 +270,13 @@ export const BlockChainContextProvider = (props) => {
 
   //end//
 
-  const mintMyNFT = async (fileUrl, name, tokenPrice, description) => {
+  const mintMyNFT = async (
+    fileUrl,
+    name,
+    tokenPrice,
+    description,
+    fileType
+  ) => {
     var months = [
       "January",
       "February",
@@ -340,6 +344,28 @@ export const BlockChainContextProvider = (props) => {
           setLoading(false);
           // window.location.reload();
         });
+      const mintedNFT = {
+        tokenName: name,
+        tokenId: tokenId,
+        tokenImage: fileUrl,
+        tokenType: fileType,
+        tokenDesc: description,
+        currentOwner: accountAddress,
+        previousOwner: "0x00",
+        price: price,
+        mintedBy: accountAddress,
+        tokenURI: tokenURI,
+        mintTime: dateTime,
+      };
+      try {
+        const result = await axios.post(
+          "https://vjtihackathon.pythonanywhere.com/login/createcontent/",
+          mintedNFT
+        );
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       if (nameIsUsed) {
         setNameIsUsed(true);
@@ -402,12 +428,10 @@ export const BlockChainContextProvider = (props) => {
     //   });
   };
 
-  // const connectToMetamaskHandler = async () => {
-  //   await connectToMetamask();
-  //   await loadWeb3();
-  //   await loadBlockchainData();
-  //   await setMetaData();
-  // };
+  const connectToMetamaskHandler = async () => {
+    await loadWeb3();
+    await loadBlockchainData();
+  };
 
   const blockChainCtx = {
     accountAddress: accountAddress,
@@ -448,7 +472,8 @@ export const BlockChainContextProvider = (props) => {
     await loadBlockchainData();
   };
   useEffect(() => {
-    getData();
+    console.log("hey", localStorage.getItem("isReload"))
+    localStorage.getItem("isReload") && getData();
   }, []);
 
   useEffect(() => {
