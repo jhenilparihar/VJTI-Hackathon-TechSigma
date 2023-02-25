@@ -10,7 +10,7 @@ const BidForm = (props) => {
   return (
     <>
       <div className="flex justify-between">
-        <button className="bg-gradient-to-r from-red-500 to-red-800 text-white font-semibold my-2 rounded-md w-[34%] justify-center py-2 text-center flex items-center" onClick={()=>router.push('/nft/bidding')}>
+        <button className="bg-gradient-to-r from-red-500 to-red-800 text-white font-semibold my-2  rounded-md w-[35%] justify-center py-2 text-center flex items-center" onClick={()=>router.push('/nft/bidding')}>
           LIVE AUCTION
           <span className="mx-2">
             <svg
@@ -31,7 +31,7 @@ const BidForm = (props) => {
         </button>
       </div>
 
-      <form className="flex flex-col">
+      <form className="flex flex-col mb-10">
         <label className="text-sm my-2 text-tertiaryred-50">
           Auction Start time<span className=" mx-1 text-xs text-tertiarywhite-100">*</span>
         </label>

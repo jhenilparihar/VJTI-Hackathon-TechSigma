@@ -29,7 +29,7 @@ function Home(props) {
         "https://vjtihackathon.pythonanywhere.com/login/createcontent/"
       );
       console.log(result);
-      setNFTs(result?.data)
+      setNFTs(result?.data);
     } catch (error) {
       console.log(error);
     }
@@ -44,12 +44,12 @@ function Home(props) {
   };
 
   const buyNFTHandler = () => {
-    blockChainCtx.buyNFT(NFT.tokenId, NFT.price);
+    console.log(typeof NFT.tokenId, NFT.tokenId, typeof NFT.price, NFT.price);
+    blockChainCtx.buyNFT(parseInt(NFT.tokenId), NFT.price);
   };
-
   useEffect(() => {
     if (currentTokenId) {
-      console.log(currentTokenId)
+      console.log(currentTokenId);
       setNFT(NFTs.filter((n) => n.tokenId == currentTokenId)[0]);
       console.log(NFT);
     }
@@ -64,11 +64,7 @@ function Home(props) {
       <div className="pb-10">
         <CurrentBanner />
         <div className="px-16">
-          <Carousel
-            items={NFTs}
-            className=""
-            onCardClick={NFTClickHandler}
-          />
+          <Carousel items={NFTs} className="" onCardClick={NFTClickHandler} />
         </div>
         <TrendingNow items={recommendations} />
       </div>
@@ -76,9 +72,10 @@ function Home(props) {
         <GenericModal
           className="w-[60%] h-[30%%]"
           closeModal={closeModalHandler}
-          posText="Buy"
+          posText={NFT.forSale ? "Buy" : "Ok"}
           negText="Cancel"
-          posHandler={buyNFTHandler}
+          disable={NFT.currentOwner == blockChainCtx.accountAddress}
+          posHandler={NFT.forSale ? buyNFTHandler : closeModalHandler}
           negHandler={closeModalHandler}
         >
           <Nftdet {...NFT} buy={true}></Nftdet>

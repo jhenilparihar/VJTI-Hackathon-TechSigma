@@ -22,6 +22,8 @@ const blockChainObj = {
   currentProfile: "",
   allUserProfile: {},
   buyNFT: () => {},
+  toggleForSale: () => {},
+  changeTokenPrice: () => {},
 };
 
 const BlockChainContext = React.createContext(blockChainObj);
@@ -45,8 +47,6 @@ export const BlockChainContextProvider = (props) => {
   const [lastMintTime, setLastMintTime] = useState(null);
   const [currentProfile, setCurrentProfile] = useState("");
   const [allUserProfile, setAllUserProfile] = useState({});
-
-  console.log(NFTs);
 
   const loadWeb3 = async () => {
     if (window.ethereum) {
@@ -213,7 +213,7 @@ export const BlockChainContextProvider = (props) => {
           localStorage.setItem(this.state.accountAddress, new Date().getTime());
           this.setState({ loading: false });
           // window.location.reload();
-          router.reload();
+          //router.reload();
         });
     }
   };
@@ -342,7 +342,7 @@ export const BlockChainContextProvider = (props) => {
         .on("confirmation", () => {
           localStorage.setItem(accountAddress, new Date().getTime());
           setLoading(false);
-          window.location.reload();
+          // window.location.reload();
         });
       const mintedNFT = {
         tokenName: name,
@@ -384,7 +384,7 @@ export const BlockChainContextProvider = (props) => {
       .send({ from: accountAddress })
       .on("confirmation", () => {
         setLoading(false);
-        window.location.reload();
+        //window.location.reload();
       });
   };
 
@@ -396,27 +396,27 @@ export const BlockChainContextProvider = (props) => {
       .send({ from: accountAddress })
       .on("confirmation", () => {
         setLoading(false);
-        window.location.reload();
+        //window.location.reload();
       });
   };
 
   const buyNFT = (tokenId, price) => {
+    console.log(tokenId, typeof tokenId, price, typeof price, "tt");
     setLoading(true);
     NFTContract?.methods
       ?.buyToken(tokenId)
       .send({ from: accountAddress, value: price })
       .on("confirmation", () => {
         setLoading(false);
-        window.location.reload();
+        //window.location.reload();
       });
   };
 
-  // const connectToMetamaskHandler = async () => {
-  //   await connectToMetamask();
-  //   await loadWeb3();
-  //   await loadBlockchainData();
-  //   await setMetaData();
-  // };
+  const connectToMetamaskHandler = async () => {
+    await loadWeb3();
+    await loadBlockchainData();
+    localStorage.setItem("reload", true);
+  };
 
   const blockChainCtx = {
     accountAddress: accountAddress,
@@ -438,6 +438,9 @@ export const BlockChainContextProvider = (props) => {
     mintMyNFT: mintMyNFT,
     uploadFileToIPFS: uploadFileToIPFS,
     buyNFT: buyNFT,
+    toggleForSale: toggleForSale,
+    changeTokenPrice: changeTokenPrice,
+    connectToMetamask: connectToMetamaskHandler,
   };
 
   // useEffect(() => {
@@ -455,7 +458,7 @@ export const BlockChainContextProvider = (props) => {
     await loadBlockchainData();
   };
   useEffect(() => {
-    getData();
+    localStorage.getItem("isReload") && getData();
   }, []);
 
   useEffect(() => {
