@@ -378,6 +378,7 @@ export const BlockChainContextProvider = (props) => {
   };
 
   const toggleForSale = (tokenId) => {
+    console.log(tokenId, typeof tokenId)
     setLoading(true);
     NFTContract?.methods
       ?.toggleForSale(tokenId)

@@ -38,7 +38,7 @@ function Carousel(props) {
     return (
       <div
         key={index}
-        onClick={()=>props?.onCardClick(item?.tokenURI)}
+        onClick={()=>props?.onCardClick(item?.tokenURI,item?.tokenName)}
         className="rounded-lg h-[400px] w-[270px] flex-shrink-0 transform transition duration-500 hover:scale-110 cursor-pointer"
       >
         <img
@@ -48,7 +48,7 @@ function Carousel(props) {
         <div className="text-xl font-bold font-Heading  border-b-2 pb-3 border-tertiarygrey-150 flex justify-between items-center px-4">
           <p className="py-2">{item?.tokenName}</p>
           <img
-            src={userImage}
+            src={userImage||"https://i.seadn.io/gae/TDT7gFhSaCkqH4HboVGNm2HYhlO9ma4QYs5N4ESqouce4QddEz-Uy07gmxZKIQaHvqFGg5nJNYCMBsuifpH4FpB2KEehYjzaifFybVc?auto=format&w=1000"}
             className="w-[25px] h-[25px] rounded-full border-2 border-red-600 "
           ></img>
         </div>

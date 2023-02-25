@@ -77543,7 +77543,11 @@
   },
   "networks": {},
   "schemaVersion": "3.4.4",
+<<<<<<< HEAD
   "updatedAt": "2023-02-25T02:44:54.664Z",
+=======
+  "updatedAt": "2023-02-25T03:56:42.221Z",
+>>>>>>> 14a5f18125d6d38882d48e3c71cedd3a3bdc53b1
   "devdoc": {
     "details": "Collection of functions related to the address type",
     "kind": "dev",

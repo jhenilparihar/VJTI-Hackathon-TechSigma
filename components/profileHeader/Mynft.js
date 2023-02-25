@@ -9,7 +9,7 @@ const Mynft = (props) => {
   };
   return (
     <div
-      className="w-[21%] rounded-md  transform transition duration-500 hover:scale-110 cursor-pointer mx-5"
+      className="w-[23%] rounded-md  transform transition duration-500 hover:scale-110 cursor-pointer mx-5"
       onClick={handlenft}
     >
       <img
