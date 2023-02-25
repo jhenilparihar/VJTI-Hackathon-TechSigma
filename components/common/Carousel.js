@@ -10,7 +10,6 @@ function Carousel(props) {
 
   const blockChainCtx = useContext(BlockChainContext);
 
-  const blockChainCtx = useContext(BlockChainContext);
 
   let translateWidth = itemSet * (carouselRef.current?.clientWidth - 225);
 

@@ -434,14 +434,6 @@ export const BlockChainContextProvider = (props) => {
     getData();
   }, []);
 
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     await setMetaData();
-  //   };
-
-    getData();
-  }, [NFTs?.length]);
-
   const setProfile = async () => {
     if (accountAddress && NFTContract) {
       {
