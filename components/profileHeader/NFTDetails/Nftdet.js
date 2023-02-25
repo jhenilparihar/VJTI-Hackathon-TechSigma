@@ -221,7 +221,7 @@ const Nftdet = (props) => {
                         className="text-sm rounded-md  bg-gradient-to-l justify-center from-rose-400 via-fuchsia-500 to-indigo-500 px-2  py-3 w-[40%] flex items-center"
                         onClick={() => setBidding(true)}
                       >
-                        <p className="text-center mx-2 ">Schecule bidding </p>
+                        <p className="text-center mx-2  ">Schecule bidding </p>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 512 512"
