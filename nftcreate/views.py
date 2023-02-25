@@ -13,9 +13,9 @@ from .serializers import *
 from django.db.models import Q
 import os
 from rest_framework.decorators import api_view
-import stripe
+#import stripe
 # Create your views here.
-stripe.api_key = 'sk_test_51Mf3UKSEPRrBuZmpovzB48Blo0SyKOvPh3CZQ5XpkYwJ2finksUYnu5dvuUkHli6gnceHIGRISYjeAhiNiucOi9V00b6SfhLdi'
+#stripe.api_key = 'sk_test_51Mf3UKSEPRrBuZmpovzB48Blo0SyKOvPh3CZQ5XpkYwJ2finksUYnu5dvuUkHli6gnceHIGRISYjeAhiNiucOi9V00b6SfhLdi'
 
 
 class createcontentdetails(generics.ListCreateAPIView):
@@ -30,6 +30,11 @@ class contentDetaildetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = contentdetails.objects.all()
     serializer_class = contentdetailsserializer
     #permission_classes = [permissions.IsAuthenticated]
+
+    def retrieve(self,request,pk=None):
+        like = contentdetails.objects.filter(tokenName=pk)
+        data = contentdetailsserializer(like,many=True)
+        return Response(data.data)
 
 class createratingdetails(generics.ListCreateAPIView):
     queryset = contentrating.objects.all()
@@ -140,14 +145,25 @@ class BIDstartDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Biddstart.objects.all()
     serializer_class = bidstartserializer
 
-    def retrieve(self,request,pk=None):
-        like = Biddstart.objects.filter(nftdetails=pk)
-        data = bidstartserializer(like,many=True)
-        return Response(data.data)
 
+    # def retrieve(self,request,pk=None):
+    #     like = Biddstart.objects.filter(nftdetails=pk)
+    #     data = bidstartserializer(like,many=True)
+    #     return Response(data.data)
+
+class livebid_view(generics.ListCreateAPIView):
+    queryset = Biddstart.objects.all()
+    serializer_class = contentdetailsserializer
+    #permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        contentno = Biddstart.objects.all().values_list('age')
+        print(contentno)
+        dictnor = contentdetails.objects.filter(tokenName__in=contentno)
+        return dictnor
 
 class Biddetail_view(generics.ListCreateAPIView):
-    queryset = Biddstart.objects.all()
+    queryset = Bidderdetails.objects.all()
     serializer_class = Bidderdetailsserializer
     #permission_classes = [permissions.IsAuthenticated]
 
@@ -163,7 +179,30 @@ class BIDderDetail(generics.RetrieveUpdateDestroyAPIView):
         data = Bidderdetailsserializer(like,many=True)
         return Response(data.data)
 
+class Buycreate_view(generics.ListCreateAPIView):
+    queryset = Buyingdetails.objects.all()
+    serializer_class = buyingserializer
+    #permission_classes = [permissions.IsAuthenticated]
 
+    def perform_create(self, serializer):
+        serializer.save()
+
+class BuyingDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Buyingdetails.objects.all()
+    serializer_class = buyingserializer
+
+    def retrieve(self,request,pk=None):
+        like = Buyingdetails.objects.filter(age=pk)
+        data = buyingserializer(like,many=True)
+        return Response(data.data)
+
+class traditionalcreate_view(generics.ListCreateAPIView):
+    queryset = traditionaldetails.objects.all()
+    serializer_class = traditionalsserializer
+    #permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save()
 
 # @api_view(['POST'])
 # def test_payment(request):

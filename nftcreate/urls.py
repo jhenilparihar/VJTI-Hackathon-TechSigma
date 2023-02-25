@@ -11,6 +11,8 @@ urlpatterns = [
     path('createuser/',createuserdetails.as_view(),name='createcontent'),
     path('userDetail/<int:pk>/',userdetaildetails.as_view(),name='contentdetail'),
     path('contentrating/',createratingdetails.as_view(),name='contentrating'),
+    path('contentdetail/<str:pk>/',contentDetaildetails.as_view(),name='contentrating'),
+
     path('ratingreommendation/',ratingreommendation.as_view(),name='rating'),
     #path('searchreommendation/',searchreommendation.as_view(),name='search'),
     #path('moodbasedreommendation/',moodbasedreommendation.as_view(),name='search'),
@@ -22,10 +24,12 @@ urlpatterns = [
     path('post-like/', views.LikePost_view.as_view()),
     path('post-like/<int:pk>/', views.LikePost_destroy_view.as_view()),
     path('bid-start/', views.Bidstart_view.as_view()),
+    path('live-bid/', views.livebid_view.as_view()),
     path('bid-start/<int:pk>/', views.BIDstartDetail.as_view()),
-    
-    path('bid-details/', views.Biddetail_view.as_view()),
-    path('bid-details/<int:pk>/', views.BIDderDetail.as_view()),
-    
+
+    path('bid-details/', views.Buycreate_view.as_view()),
+    path('trad-details/', views.traditionalcreate_view.as_view()),
+    path('bid-details/<str:pk>/', views.BuyingDetail.as_view()),
+
 
     ]

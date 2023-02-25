@@ -21,12 +21,20 @@ class Bidderdetailsserializer(serializers.ModelSerializer):
         model = Bidderdetails
         fields = '__all__'
 
+class traditionalsserializer(serializers.ModelSerializer):
+    class Meta:
+        model = traditionaldetails
+        fields = '__all__'
 
 class bidstartserializer(serializers.ModelSerializer):
     class Meta:
         model = Biddstart
         fields = '__all__'
 
+class buyingserializer(serializers.ModelSerializer):
+    class Meta:
+        model = Buyingdetails
+        fields = '__all__'
 
 class PostSerializer(serializers.ModelSerializer):
     #owner = serializers.ReadOnlyField(source='owner.name')
@@ -41,13 +49,13 @@ class PostSerializer(serializers.ModelSerializer):
         comment =  Comment.objects.filter(group_post=obj)
         return comment.count()
 
-    
+
     # votes_on_post = serializers.SerializerMethodField('get_votes')
     # def get_votes(self,obj):
     # 	votes = Votes_on_post.objects.filter(group_post=obj)
     # 	return votes.count()
 
-    
+
     class Meta:
         model = Post
         fields = ['id', 'title', 'body', 'owner','images_post','youtube_link','like_on_post_count','comment_on_post_count']

@@ -1,6 +1,6 @@
 from django.db import models
 import os
-import stripe
+
 
 # Create your models here.
 def path_and_rename_for_resume(instance, filename):
@@ -37,7 +37,7 @@ class Userdetails(models.Model):
 	timeOfRegistry = models.TextField(null=True,blank=True)
 
 class contentrating(models.Model):
-	content =  models.ForeignKey(contentdetails, related_name = 'contentdetails', on_delete=models.CASCADE) 
+	content =  models.ForeignKey(contentdetails, related_name = 'contentdetails', on_delete=models.CASCADE)
 	user 	= models.ForeignKey(Userdetails, related_name = 'userdetails',on_delete=models.CASCADE)
 	rating  = models.TextField(blank=True, max_length=255)
 
@@ -79,16 +79,40 @@ class Biddstart(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	name 	= models.TextField(blank=True,null=True)
 	age = models.TextField(blank=True,null=True)
-	nftdetails = models.ForeignKey(contentdetails,related_name = 'nftdetails_owner', on_delete=models.CASCADE)
+	# = models.ForeignKey(contentdetails,related_name = 'nftdetails_owner', on_delete=models.CASCADE,blank=True,null=True)
+	#nftdetails = models.TextField(null=True,blank=True)
 	base_price = models.TextField(blank=True,null=True)
 	end_date = models.TextField(blank=True,null=True)
+	start_date = models.TextField(blank=True,null=True)
 
 class Bidderdetails(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	name 	= models.TextField(blank=True,null=True)
 	age = models.TextField(blank=True,null=True)
-	nftdetails = models.ForeignKey(contentdetails,related_name = 'nftdetails_buyer', on_delete=models.CASCADE)
+	nftdetails = models.ForeignKey(contentdetails,related_name = 'nftdetails_buyer', on_delete=models.CASCADE,blank=True,null=True)
 	bid_price = models.TextField(blank=True,null=True)
 	#end_date = models.TextField(blank=True,null=True)
 
+class traditionaldetails(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	name 	= models.TextField(blank=True,null=True)
+	TokenId = models.TextField(blank=True,null=True)
+	accountAddress = models.TextField(blank=True,null=True)
+	bid_price = models.TextField(blank=True,null=True)
 
+class Bidderdetails(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	name 	= models.TextField(blank=True,null=True)
+	age = models.TextField(blank=True,null=True)
+	nftdetails = models.ForeignKey(contentdetails,related_name = 'nftdetails', on_delete=models.CASCADE,blank=True,null=True)
+	bid_price = models.TextField(blank=True,null=True)
+
+class Buyingdetails(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	TokenId 	= models.TextField(blank=True,null=True)
+	accountAddress = models.TextField(blank=True,null=True)
+	imageurl = models.TextField(blank=True,null=True)
+	#nftdetails = models.ForeignKey(contentdetails,related_name = 'traditional_buyer', on_delete=models.CASCADE,blank=True,null=True)
+	name = models.TextField(blank=True,null=True)
+	nftname = models.TextField(blank=True,null=True)
+	price = models.TextField(blank=True,null=True)
