@@ -21,7 +21,7 @@ const blockChainObj = {
   lastMintTime: null,
   currentProfile: "",
   allUserProfile: {},
-  buyNFT:()=>{}
+  buyNFT: () => {},
 };
 
 const BlockChainContext = React.createContext(blockChainObj);
@@ -62,7 +62,7 @@ export const BlockChainContextProvider = (props) => {
 
   const loadBlockchainData = async () => {
     // if(!metamaskConnected) {
-     await connectToMetamask();
+    await connectToMetamask();
     // }
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
@@ -98,7 +98,7 @@ export const BlockChainContextProvider = (props) => {
         localStorage.setItem("NFTCount", NFTCount);
         for (var i = 1; i <= NFTCount; i++) {
           const nft = await NFTContract1?.methods?.allNFTs(i).call();
-  
+
           setNFTs((prevState) => {
             let flag = false;
             for (let i of prevState) {
@@ -270,7 +270,13 @@ export const BlockChainContextProvider = (props) => {
 
   //end//
 
-  const mintMyNFT = async (fileUrl, name, tokenPrice, description) => {
+  const mintMyNFT = async (
+    fileUrl,
+    name,
+    tokenPrice,
+    description,
+    fileType
+  ) => {
     var months = [
       "January",
       "February",
@@ -338,6 +344,28 @@ export const BlockChainContextProvider = (props) => {
           setLoading(false);
           window.location.reload();
         });
+      const mintedNFT = {
+        tokenName: name,
+        tokenId: tokenId,
+        tokenImage: fileUrl,
+        tokenType: fileType,
+        tokenDesc: description,
+        currentOwner: accountAddress,
+        previousOwner: "0x00",
+        price: price,
+        mintedBy: accountAddress,
+        tokenURI: tokenURI,
+        mintTime: dateTime,
+      };
+      try {
+        const result = await axios.post(
+          "https://vjtihackathon.pythonanywhere.com/login/createcontent/",
+          mintedNFT
+        );
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       if (nameIsUsed) {
         setNameIsUsed(true);
@@ -409,7 +437,7 @@ export const BlockChainContextProvider = (props) => {
     allUserProfile: allUserProfile,
     mintMyNFT: mintMyNFT,
     uploadFileToIPFS: uploadFileToIPFS,
-    buyNFT:buyNFT
+    buyNFT: buyNFT,
   };
 
   // useEffect(() => {

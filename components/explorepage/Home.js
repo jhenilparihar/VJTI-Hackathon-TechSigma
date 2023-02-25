@@ -5,6 +5,7 @@ import TrendingNow from "./TrendingNow";
 import BlockChainContext from "@/store/blockchain-context";
 import GenericModal from "../common/GenericModal";
 import Nftdet from "../profileHeader/NFTDetails/Nftdet";
+import axios from "axios";
 
 const recommendations = [
   "https://www.indiewire.com/wp-content/uploads/2017/09/imperial-dreams-2014.jpg?w=426",
@@ -19,8 +20,20 @@ const recommendations = [
 function Home(props) {
   const blockChainCtx = useContext(BlockChainContext);
   const [currentTokenId, setCurrentTokenId] = useState("");
-  const [NFT,setNFT]=useState({})
- 
+  const [NFT, setNFT] = useState({});
+  const [NFTs, setNFTs] = useState([]);
+
+  const fetchNFTs = async () => {
+    try {
+      const result = await axios.get(
+        "https://vjtihackathon.pythonanywhere.com/login/createcontent/"
+      );
+      console.log(result);
+      setNFTs(result?.data)
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const NFTClickHandler = (tokenId) => {
     setCurrentTokenId(tokenId);
@@ -28,23 +41,23 @@ function Home(props) {
 
   const closeModalHandler = () => {
     setCurrentTokenId("");
-  }
+  };
 
   const buyNFTHandler = () => {
-    blockChainCtx.buyNFT(NFT.tokenId,NFT.price)
+    blockChainCtx.buyNFT(NFT.tokenId, NFT.price);
+  };
 
-  }
-  useEffect(()=>{
-    if(currentTokenId)
-    {
-    setNFT(blockChainCtx.NFTs.filter((n)=>n.tokenId==currentTokenId)[0])
-    console.log(NFT)
-  }
-    
-  },[currentTokenId])
-  useEffect(()=>{
-    console.log(NFT)
-  },[NFT])
+  useEffect(() => {
+    if (currentTokenId) {
+      console.log(currentTokenId)
+      setNFT(NFTs.filter((n) => n.tokenId == currentTokenId)[0]);
+      console.log(NFT);
+    }
+  }, [currentTokenId]);
+
+  useEffect(() => {
+    fetchNFTs();
+  }, []);
 
   return (
     <>
@@ -52,14 +65,14 @@ function Home(props) {
         <CurrentBanner />
         <div className="px-16">
           <Carousel
-            items={blockChainCtx?.NFTs}
+            items={NFTs}
             className=""
             onCardClick={NFTClickHandler}
           />
         </div>
         <TrendingNow items={recommendations} />
       </div>
-      {currentTokenId && (
+      {Object.keys(NFT)?.length > 0 && (
         <GenericModal
           className="w-[60%] h-[30%%]"
           closeModal={closeModalHandler}
@@ -69,7 +82,6 @@ function Home(props) {
           negHandler={closeModalHandler}
         >
           <Nftdet {...NFT} buy={true}></Nftdet>
-         
         </GenericModal>
       )}
     </>

@@ -7,6 +7,7 @@ import BlockChainContext from "@/store/blockchain-context";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import metamask from "../../public/metamask.gif";
+import NFTAI from "./NFTAI";
 
 const toolbarContainer = [
   ["bold", "italic", "underline"], // toggled buttons
@@ -53,6 +54,10 @@ function CreateNFT(props) {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [isGeneratedAI, setIsGeneratedAI] = useState(false);
+
+  const [ai, setAi] = useState(null);
+
   const router = useRouter();
 
   const imageInputChangeHandler = (newImage) => {
@@ -80,6 +85,20 @@ function CreateNFT(props) {
     setFileURL(fileLink);
   };
 
+  const closeModalHandler = () => {
+    setIsGeneratedAI(false);
+    setFileURL("");
+    setAi("");
+  };
+
+  const publishAIHandler = async (ai) => {
+    // let response = await fetch(ai?.src);
+    // let data = await response.blob();    
+    setImageInput(ai);
+    setAi(ai);
+    setIsGeneratedAI(false);
+  };
+
   const formSubmitHandler = async (event) => {
     event.preventDefault();
 
@@ -93,8 +112,6 @@ function CreateNFT(props) {
     setIsLoading(false);
     router.push("/explore");
   };
-
-  console.log(metamask);
 
   useEffect(() => {
     const formIsValid =
@@ -118,14 +135,23 @@ function CreateNFT(props) {
                 <ImageUpload
                   onUpload={imageInputChangeHandler}
                   enableReset={true}
-                  defaultImage={""}
+                  defaultImage={ai && ai}
                   image={imageInput}
                   onReset={resetImageInputHandler}
-                  className="h-[550px] w-full flex-shrink-0 space-y-8"
-                  imageDimensions="max-h-[450px] max-w-full"
-                  uploadBoxDimensions="h-[450px] w-full flex-shrink-0 space-y-10"
+                  className="h-[400px] w-full flex-shrink-0 space-y-8"
+                  imageDimensions="max-h-[400px] max-w-full"
+                  uploadBoxDimensions="h-[400px] w-full flex-shrink-0 space-y-10"
                   onUploadToIPFS={uploadToIPFSHandler}
                 />
+                <button
+                  type="button"
+                  className="py-3 w-full text-center text-tertiaryred-50 border-2 border-tertiaryred-50 mt-[100px]"
+                  onClick={() => {
+                    setIsGeneratedAI(true);
+                  }}
+                >
+                  Generate Via AI
+                </button>
               </div>
               <div className="flex-grow flex-shrink-0 space-y-6">
                 <Input
@@ -191,9 +217,10 @@ function CreateNFT(props) {
             <div className="flex justify-end">
               <button
                 disabled={formHasError}
-                className={`px-4 py-2 border-2 rounded-md text-base font-display font-semibold ${
-                  formHasError &&
-                  "border-tertiarygrey-400 text-tertiarygrey-400" || "border-tertiaryred-50 text-tertiaryred-50"
+                className={`px-4 py-2 border-2 rounded-md text-base font-display font-semibold mt-16 ${
+                  (formHasError &&
+                    "border-tertiarygrey-400 text-tertiarygrey-400") ||
+                  "border-tertiaryred-50 text-tertiaryred-50"
                 }`}
                 type="submit"
               >
@@ -201,6 +228,12 @@ function CreateNFT(props) {
               </button>
             </div>
           </form>
+          {isGeneratedAI && (
+            <NFTAI
+              onPublish={publishAIHandler}
+              onCloseModal={closeModalHandler}
+            />
+          )}
         </div>
       )}
       {isLoading && (

@@ -71,6 +71,14 @@ function ImageUpload(props) {
     // }
   }, [imageFile, props?.image]);
 
+  useEffect(() => {
+    console.log(props?.defaultImage)
+    if (props?.defaultImage) {
+      setPreviewImage(props?.defaultImage?.src);
+      setFileType("image");
+    }
+  }, [props?.defaultImage]);
+
   return (
     <div
       className={`flex-grow flex flex-col space-y-5 text-tertiaryred-50 ${props?.className}`}
@@ -118,7 +126,7 @@ function ImageUpload(props) {
           )} */}
           {fileType === "image" && (
             <img
-              src={previewImage}
+              src={props?.defaultImage?.src || previewImage}
               className="h-full w-full object-contain object-center"
             />
           )}
@@ -131,7 +139,13 @@ function ImageUpload(props) {
             />
           )}
           <div className="flex justify-between mt-4">
-          <button type="button" onClick={props?.onUploadToIPFS}>Upload To IPFS</button>
+            <button
+              className="px-4 py-2 rounded-md border-2 border-tertiaryred-50"
+              type="button"
+              onClick={props?.onUploadToIPFS}
+            >
+              Upload To IPFS
+            </button>
             <div className="space-x-5 ">
               <button
                 type="button"
