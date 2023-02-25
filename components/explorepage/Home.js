@@ -23,6 +23,7 @@ function Home(props) {
   const [NFT, setNFT] = useState({});
   const [NFTs, setNFTs] = useState([]);
 
+
   const fetchNFTs = async () => {
     try {
       const result = await axios.get(
@@ -41,6 +42,8 @@ function Home(props) {
 
   const closeModalHandler = () => {
     setCurrentTokenId("");
+    setNFT()
+    
   };
 
   const buyNFTHandler = () => {
@@ -68,7 +71,7 @@ function Home(props) {
         </div>
         <TrendingNow items={recommendations} />
       </div>
-      {Object.keys(NFT)?.length > 0 && (
+      {NFT && Object.keys(NFT)?.length > 0 && (
         <GenericModal
           className="w-[60%] h-[30%%]"
           closeModal={closeModalHandler}
