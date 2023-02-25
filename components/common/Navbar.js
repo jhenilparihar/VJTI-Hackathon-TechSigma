@@ -1,11 +1,16 @@
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import BlockChainContext from "@/store/blockchain-context";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWallet } from "@fortawesome/free-solid-svg-icons";
+
 function Navbar(props) {
   const ctx = useContext(BlockChainContext);
 
   const [isScroll, setIsScroll] = useState(false);
   const [currentTab, setCurrentTab] = useState("explore");
+  const [showButton, setShowButton] = useState(true);
+  const [showWallet, setShowWallet] = useState(false);
 
   const router = useRouter();
 
@@ -29,6 +34,13 @@ function Navbar(props) {
     const path = router?.pathname?.slice(1);
     setCurrentTab(path);
   }, [router?.pathname]);
+
+  useEffect(() => {
+    setShowButton(
+      typeof window != "undefined" && !localStorage.getItem("isReload")
+    );
+    console.log(localStorage.getItem("isReload"));
+  }, []);
 
   return (
     <div
@@ -86,16 +98,38 @@ function Navbar(props) {
             </div>
           )}
         </div>
-        {typeof window != "undefined" && !localStorage.getItem("isReload") && (
+        {showButton && !ctx?.accountAddress && (
           <button
             type="button"
-            onClick={ctx?.connectToMetamask}
+            onClick={() => {
+              setShowButton(false);
+              localStorage.setItem("isReload", true);
+              ctx?.connectToMetamask();
+            }}
             className="rounded-md px-4 py-2 my-5 bg-tertiaryred-50 hover:bg-tertiaryred-500"
           >
             Connect To Metamask
           </button>
         )}
-        {/* {ctx?.accountAddress && <button type></button>} */}
+        {ctx?.accountAddress && (
+          <div className="relative">
+            <button
+              className="text-tertiaryred-50 text-xl hover:rounded-full px-4 py-3 hover:bg-tertiarygrey-500"
+              type="button"
+              onClick={() => {
+                setShowWallet(true);
+              }}
+            >
+              <FontAwesomeIcon icon={faWallet} />
+            </button>
+            {showWallet && (
+              <div className="absolute bg-tertiarygrey-670 rounded-lg">
+                <div>{ctx?.accountAddress}</div>
+                <div className="text-lg font-medium">{ctx?.accountBalance}</div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
