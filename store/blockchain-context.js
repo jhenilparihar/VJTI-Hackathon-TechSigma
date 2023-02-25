@@ -355,7 +355,6 @@ export const BlockChainContextProvider = (props) => {
         price: price,
         mintedBy: accountAddress,
         tokenURI: tokenURI,
-        mintTime: dateTime,
       };
       try {
         const result = await axios.post(
@@ -457,7 +456,7 @@ export const BlockChainContextProvider = (props) => {
     await loadBlockchainData();
   };
   useEffect(() => {
-    console.log("hey", localStorage.getItem("isReload"))
+    console.log("hey", localStorage.getItem("isReload"));
     localStorage.getItem("isReload") && getData();
   }, []);
 
