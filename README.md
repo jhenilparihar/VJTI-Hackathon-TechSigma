@@ -1,38 +1,147 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+<h1 align="center"> KryptoNaut </h1>
+<h3 align="center"> Blockchain Based NFT marketplace DApp where users mint and Trade ERC721 implemented NFTs<h3>
 
-First, run the development server:
+<div align="center">
+  
+ 
+  [![made-with-react](https://img.shields.io/badge/React-16.8.4-brightgreen.svg?style=for-the-badge)](https://github.com/facebook/create-react-app)
+   [![](https://img.shields.io/badge/-Ethereum-lightgrey.svg?style=for-the-badge)](https://www.ethereum.org/)
+    ![](https://img.shields.io/badge/Smart%20-Contract-lightgrey.svg?style=for-the-badge)
+ ![](https://img.shields.io/github/forks/jhenilparihar/DeepSpace.svg?style=for-the-badge) 
+  ![](https://img.shields.io/github/stars/jhenilparihar/DeepSpace.svg?style=for-the-badge) 
+<!--   ![](https://img.shields.io/github/license/jhenilparihar/DeepSpace.svg?style=for-the-badge)
+   -->
+ </div>
+  
+  ## DeepSpace : About
+- It is a blockchain based project for Trading Nft's. 
+- It works on the idea that: “All the users can buy,sell,mint/create their Nft's or can just view Nft's that are created by other people in the world” The entire process       works on the blockchain in partnership with the IPFS(to provide data security). 
+- Does Everything for Nft's : Creating ,Selling and Buying .
+- Thus this is a modern way to manage and trade Nft's!
+- This is my Diploma Final year Project.
+  
+## Insight
+- It is D-App on [Ethereum](https://www.ethereum.org/).
+- Back-End has Smart Contract 
+- Front-end of our Web-App is made with [React.Js](https://github.com/facebook/create-react-app)   
+- All User-Data is stored on [IPFS](https://ipfs.io/) also every data is first encryted locally and then send to ipfs to have more security
+<p align="center">
+ <img height=350px  src="https://user-images.githubusercontent.com/83356501/180175122-36c84feb-f08e-4d9e-b0a6-cc9f176c643a.png" >
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+</p>
+
+
+- We are using [Metamask](https://metamask.io/) Browser Extension to work with Ethereum.
+- We have used [Truffle](https://www.trufflesuite.com/) for testing our project
+  
+  
+  
+  ## How to Use
+
+### Signup/Login
+- Connect to metamask
+
+  
+ - Upon First Signup `Metamask` User Profile will be set to the Explore page.
+   
+  
+  - You can edit your profile by going to the profile Setting page.
+  
+  
+  
+  - Landing page have these options :
+ 
+ 
+         - `Explore`
+              - User's can Explore all the Nft's that have been minted by all users on our site. On the explore page user will get some filter options like recently minted or getting Nft's between specific price range(some filters are yet to be added still working on it).
+ 
+- Create page.
+      - User's can create their Nft's by going to the create section. They can upload their artwork , give it name, set appropriate price and description.
+ 
+
+- Explore page.
+    - User's can Explore all the Nft's that have been minted by all users on our site. On the explore page user will get some filter options like recently minted or getting Nft's between specific price range(some filters are yet to be added still working on it).
+ 
+
+- Nft Details page.
+    - User's can view details about a particular Nft by clicking on it(nft info includes: Nft image, Creator, Current Owner,Previous Owner,Buy Option,if owner[then keep for sale/remove from sale option and change price option],description).
+
+
+- Buy Nft by clickinh on buy button
+ <p align="center">
+ <img height=350px  src="https://github.com/HarshDilipGhosalkar/DeepSpace/blob/main/images/buy.gif" >
+</p> 
+
+  - Feed Page.
+    - User can create posts about there nft's which will then be displayed on feed page.
+    - Feed page can be used for publishment of special NFT's and for displaying tranding nft's.
+ 
+<br>
+
+#
+### Stack
+- [Solidity](https://docs.soliditylang.org/en/v0.7.6/) - Object-oriented, high-level language for implementing smart contracts.
+- [Bootstrap 4](https://getbootstrap.com/) - CSS framework for faster and easier web development.
+- [React.js](https://reactjs.org/) - JavaScript library for building user interfaces.
+- [web3.js](https://web3js.readthedocs.io/en/v1.3.4/) - Allows users to interact with a local or remote ethereum node using HTTP, IPC or WebSocket.
+- [Truffle](https://www.trufflesuite.com/truffle) - Development environment, testing framework and asset pipeline for blockchains using the Ethereum Virtual Machine (EVM).
+- [Ganache](https://www.trufflesuite.com/ganache) - Personal blockchain for Ethereum development used to deploy contracts, develop DApps, and run tests.
+#
+### Interact with the deployed DApp
+- Marketplace DApp requires [Metamask](https://metamask.io/) browser wallet extension to interact with.
+- Connect metamask browser wallet to Localhost 7545 running a custom RPC like Ganache.
+<!-- - Access Marketplace DApp at [NFT-marketplace]() and start minting your NFTs. -->
+#
+### Run the DApp Locally
+#### Install truffle
 ```
+npm install -g truffle
+```
+#### Install ganache-cli
+```
+npm i ganache-cli
+```
+#### Run ganache-cli
+```
+ganache-cli --port 7545
+```
+#### Open new terminal window and clone this repository
+```
+git clone https://github.com/jhenilparihar/DeepSpace.git
+```
+#### Install dependencies
+```
+cd DeepSpace
+npm install
+```
+#### Compile smart contract
+```
+truffle compile
+```
+#### Deploy smart contract to ganache
+```
+truffle migrate
+```
+#### Test smart contract
+```
+truffle test
+```
+#### Start DApp
+```
+npm start
+```
+- Open metamask browser wallet and connect network to Localhost 7545.
+- Import accounts from ganache-cli into the metamask browser wallet to make transactions on the DApp.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+  -------------------------------------
+  
+  ## Contributing
+  - We're are open to enhancements & bug-fixes.
+  - Feel free to add issues and submit patches.
+  ## Authors
+  - Harsh Ghosalkar - [HarshDilipGhosalkar](https://github.com/HarshDilipGhosalkar)
+  - Jhenil Parihar - [JhenilParihar](https://github.com/jhenilparihar)
+  - Dev Jobalia -[DevJobalia](https://github.com/DevJobalia)
+## License
+This project is licensed under the MIT
