@@ -1,4 +1,7 @@
-
+<p align="center">
+ 
+<img height=200px src="https://raw.githubusercontent.com/jhenilparihar/DeepSpace/master/src/components/Navbar/assets/image.png?token=GHSAT0AAAAAAB4WGLCGZU5HHQGCQ2KWEACMY7ZVVUA" >         
+        </p>
 <h1 align="center"> CryptoNaut </h1>
 <h3 align="center"> Blockchain Based NFT marketplace DApp where users mint and Trade ERC721 implemented NFTs<h3>
 
