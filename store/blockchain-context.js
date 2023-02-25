@@ -355,7 +355,6 @@ export const BlockChainContextProvider = (props) => {
         price: price,
         mintedBy: accountAddress,
         tokenURI: tokenURI,
-        mintTime: dateTime,
       };
       try {
         const result = await axios.post(

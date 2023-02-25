@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useRouter } from "next/router";
 import BlockChainContext from "@/store/blockchain-context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +11,8 @@ function Navbar(props) {
   const [currentTab, setCurrentTab] = useState("explore");
   const [showButton, setShowButton] = useState(true);
   const [showWallet, setShowWallet] = useState(false);
+
+  const walletRef = useRef();
 
   const router = useRouter();
 
@@ -114,18 +116,34 @@ function Navbar(props) {
         {ctx?.accountAddress && (
           <div className="relative">
             <button
-              className="text-tertiaryred-50 text-xl hover:rounded-full px-4 py-3 hover:bg-tertiarygrey-500"
+              className={`text-tertiaryred-50 text-xl hover:rounded-full px-4 py-3 hover:bg-tertiarygrey-500 ${
+                showWallet && "bg-tertiarygrey-500 rounded-full"
+              }`}
               type="button"
               onClick={() => {
-                setShowWallet(true);
+                setShowWallet((prevState) => {
+                  return !prevState;
+                });
               }}
+              ref={walletRef}
             >
               <FontAwesomeIcon icon={faWallet} />
             </button>
             {showWallet && (
-              <div className="absolute bg-tertiarygrey-670 rounded-lg">
-                <div>{ctx?.accountAddress}</div>
-                <div className="text-lg font-medium">{ctx?.accountBalance}</div>
+              <div className="absolute bg-tertiarygrey-670 rounded-lg right-[10%] px-6 py-8">
+                <p className="text-sm text-tertiarygrey-350">Account Address</p>
+                <div className="text-tertiarygrey-350 mb-4 mt-2">
+                  {ctx?.accountAddress}
+                </div>
+                <p className="text-sm text-tertiarygrey-350 mb-2">
+                  Account Balance
+                </p>
+                <span className="text-2xl font-semibold">
+                  {ctx?.accountBalance}
+                </span>
+                <span className="ml-2 text-base text-tertiarygrey-350">
+                  ETH
+                </span>
               </div>
             )}
           </div>

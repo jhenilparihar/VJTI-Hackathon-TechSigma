@@ -61,8 +61,12 @@ function Home(props) {
   }, [currentTokenURI]);
 
   useEffect(() => {
-    fetchNFTs();
-  }, []);
+    if (blockChainCtx?.metamaskConnected) {
+      setNFTs([...blockChainCtx?.NFTs]);
+    } else {
+      fetchNFTs();
+    }
+  }, [blockChainCtx?.NFTs]);
 
   return (
     <>
