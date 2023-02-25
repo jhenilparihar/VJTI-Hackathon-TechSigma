@@ -68,10 +68,10 @@
     - User's can view details about a particular Nft by clicking on it(nft info includes: Nft image, Creator, Current Owner,Previous Owner,Buy Option,if owner[then keep for sale/remove from sale option and change price option],description).
 
 
-- Buy Nft by clickinh on buy button
- <p align="center">
- <img height=350px  src="https://github.com/HarshDilipGhosalkar/DeepSpace/blob/main/images/buy.gif" >
-</p> 
+- Buying of NFT's
+    - One method for buying NFT's is using crypto's.
+    - The second method for buying nft's for non-crypto user is Traditional payment method which is implemented using stripe payment method,after Successfully        transfering of money particular nft's ownership will also be transfered to that specific buyer
+  
 
   - Feed Page.
     - User can create posts about there nft's which will then be displayed on feed page.
@@ -142,6 +142,8 @@ npm start
   ## Authors
   - Harsh Ghosalkar - [HarshDilipGhosalkar](https://github.com/HarshDilipGhosalkar)
   - Jhenil Parihar - [JhenilParihar](https://github.com/jhenilparihar)
-  - Dev Jobalia -[DevJobalia](https://github.com/DevJobalia)
+  - Yash Joshi
+  - Param Kothari
+  - Paras Mehta
 ## License
 This project is licensed under the MIT
